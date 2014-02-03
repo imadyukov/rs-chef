@@ -1,18 +1,18 @@
-# RightScale Chef Server and Client Cookbook
+# RightScale Chef Client Cookbook - Bootstrap chef-client to run as RS boots server.
 
 ## DESCRIPTION:
 
-This cookbook is available at [https://github.com/rightscale/rightscale_cookbooks](https://github.com/rightscale/rightscale_cookbooks).
+This if fork of original cookbook is available at [https://github.com/rightscale/rightscale_cookbooks](https://github.com/rightscale/rightscale_cookbooks).
 
-This cookbook provides recipes for setting up and running a Chef Client.
+This cookbook provides recipes for setting up and running a Chef Client. RS launches chef-solo which runs this recipe that allows chef-client and server run.
 
 ## REQUIREMENTS:
 
 * Requires a VM launched from a RightScale managed RightImage
 
-* Tested on the following RightImages: CentOS 6.3, Ubuntu 12.04
+* Tested on the following RightImages: CentOS 6.4
 
-* Tested Chef Client version 10.24.0-1
+* Tested Chef Client version 11.8.2-1
 
 ## COOKBOOKS DEPENDENCIES:
 
