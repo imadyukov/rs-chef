@@ -16,7 +16,6 @@ cookbook_file "/tmp/install.sh" do
 end
 
 # Installs the Chef Client using user selected version.
-
 execute "install chef client" do
   command "/tmp/install.sh -v #{node[:chef][:client][:version]}"
 end

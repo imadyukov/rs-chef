@@ -25,11 +25,11 @@ There are no known limitations.
 
 ## SETUP/USAGE:
 
-* When using a RightScale ServerTemplate, place `chef::install_client`
+* When using a RightScale ServerTemplate, place `rs-chef::install_client`
   recipe into your runlist to setup the Chef Client. Set server_url,
   validator_pem and validation_name to match the Chef Server configuration.
 
-* Set inputs reconverge_list to the value `chef::do_client_converge` and
+* Set inputs reconverge_list to the value `rs-chef::do_client_converge` and
   interval to minutes.
 
 For more info see: [Release Notes](http://support.rightscale.com/18-Release_Notes/ServerTemplates_and_RightImages/v13.4#Chef_Client_\(v13.4\))
@@ -80,20 +80,20 @@ These are the settings used in recipes and templates. Default values are noted.
 ### Templates:
 
 * `client.rb.erb`-
-  The Chef Client configuration file. Used in `chef::install_client` recipe.
+  The Chef Client configuration file. Used in `rs-chef::install_client` recipe.
 * `validation_key.erb`-
   Private SSH key which will be used to authenticate the Chef Client on the
-  remote Chef Server. Used in `chef::install_client` and
-  `chef::do_client_converge` recipes.
+  remote Chef Server. Used in `rs-chef::install_client` and
+  `rs-chef::do_client_converge` recipes.
 * `runlist.json.erb`-
   The Chef Client runlist.json file. Defined in setup_runlist definition and
-  used in `chef::install_client` and `chef::do_client_converge` recipes.
+  used in `rs-chef::install_client` and `rs-chef::do_client_converge` recipes.
 
 ### Usage Example:
 
 ## Update and execute runlist.
 
-* `chef::do_client_converge`
+* `rs-chef::do_client_converge`
   This recipe is used in the operational phase only. It runs runlist from file.
   To update the roles user can provide new roles as input and run the recipe.
   Roles to be used should be available on the Chef Server.
