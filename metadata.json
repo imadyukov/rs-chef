@@ -193,5 +193,5 @@
     "rs-chef::do_client_converge": "Allows manual update/re-run of runlist on the Chef Client.",
     "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server."
   },
-  "version": "14.0.0"
+  "version": "14.0.1"
 }
