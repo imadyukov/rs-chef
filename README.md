@@ -12,7 +12,7 @@ This cookbook provides recipes for setting up and running a Chef Client. RS laun
 
 * Tested on the following RightImages: CentOS 6.4
 
-* Tested Chef Client version 11.8.2-1
+* Tested Chef Client version 11.10.0-1
 
 ## COOKBOOKS DEPENDENCIES:
 

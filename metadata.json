@@ -25,9 +25,9 @@
   "attributes": {
     "rs-chef/client/version": {
       "display_name": "Chef Client Version",
-      "description": "Specify the Chef Client version to match requirements of your Chef Server. Example: 11.8.2-1",
+      "description": "Specify the Chef Client version to match requirements of your Chef Server. Example: 11.10.0-1",
       "required": "optional",
-      "default": "11.8.2-1",
+      "default": "11.10.0-1",
       "recipes": [
         "rs-chef::install_client"
       ],
