@@ -23,9 +23,9 @@ attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
     "Specify the Chef Client version to match requirements of your Chef" +
-    " Server. Example: 11.10.0-1",
+    " Server. Example: 11.12.8-2",
   :required => "optional",
-  :default => "11.10.0-1",
+  :default => "11.12.8-2",
   :recipes => ["rs-chef::install_client"]
 
 attribute "chef/client/server_url",

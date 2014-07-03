@@ -10,7 +10,7 @@
 set[:chef][:client][:config_dir] = "/etc/chef"
 
 # Recommended attributes
-default[:chef][:client][:version] = "11.10.0-1"
+default[:chef][:client][:version] = "11.12.8-2"
 default[:chef][:client][:environment] = "_default"
 
 # Required attributes
