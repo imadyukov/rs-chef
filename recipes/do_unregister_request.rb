@@ -6,14 +6,14 @@
 # http://www.rightscale.com/terms.php and, if applicable, other agreements
 # such as a RightScale Master Subscription Agreement.
 
-class Chef::Recipe
+class Chef::Resource::RubyBlock
   include Rschef::Helper
 end
 
 ruby_block "delete_node_and_client" do
   block do
     cmd_args = node[:chef][:client][:node_name]
-    cmd_args << " --user #{node[:chef][:client][:node_name]}-#{Rschef::Helper.launchtime}"
+    cmd_args << " --user #{node[:chef][:client][:node_name]}-#{launchtime}"
     cmd_args << " --key /etc/chef/client.pem"
     cmd_args << " --server-url #{node[:chef][:client][:server_url]}"
     cmd_args << " --yes"

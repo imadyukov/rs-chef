@@ -39,7 +39,7 @@ template "#{node[:chef][:client][:config_dir]}/client.rb" do
   variables(
     :server_url => node[:chef][:client][:server_url],
     :validation_name => node[:chef][:client][:validation_name],
-    :node_name => node[:chef][:client][:node_name] + '-' + Rschef::Helper.launchtime,
+    :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
     :log_level => node[:chef][:client][:log_level],
     :log_location => node[:chef][:client][:log_location]
   )
@@ -70,7 +70,7 @@ template "#{node[:chef][:client][:config_dir]}/runlist.json" do
   mode "0440"
   backup false
   variables(
-    :node_name => node[:chef][:client][:node_name] + '-' + Rschef::Helper.launchtime,
+    :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
     :environment => node[:chef][:client][:environment],
     :company => node[:chef][:client][:company],
     :roles => node[:chef][:client][:roles]

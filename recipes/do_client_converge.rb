@@ -22,7 +22,7 @@ if node[:chef][:client][:current_roles] != node[:chef][:client][:roles]
     mode "0440"
     backup false
     variables(
-      :node_name => node[:chef][:client][:node_name] + '-' + Rschef::Helper.launchtime,
+      :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
       :environment => node[:chef][:client][:environment],
       :company => node[:chef][:client][:company],
       :roles => node[:chef][:client][:roles]
