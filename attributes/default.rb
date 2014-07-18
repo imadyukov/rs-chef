@@ -29,3 +29,4 @@ default[:chef][:client][:log_level] = "info"
 default[:chef][:client][:log_location] = "/var/log/chef-client.log"
 # The secret key used to encrypt the data bag items
 default[:chef][:client][:data_bag_secret] = ""
+
