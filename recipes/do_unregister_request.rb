@@ -6,6 +6,10 @@
 # http://www.rightscale.com/terms.php and, if applicable, other agreements
 # such as a RightScale Master Subscription Agreement.
 
+class Chef::Recipe
+  include Rschef::Helper
+end
+
 ruby_block "delete_node_and_client" do
   block do
     cmd_args = node[:chef][:client][:node_name]

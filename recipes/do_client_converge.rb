@@ -6,6 +6,10 @@
 # http://www.rightscale.com/terms.php and, if applicable, other agreements
 # such as a RightScale Master Subscription Agreement.
 
+class Chef::Recipe
+  include Rschef::Helper
+end
+
 log "  Current Chef Client role(s) are: #{node[:chef][:client][:current_roles]}"
 
 # Updates runlist.json file with new roles.
