@@ -6,7 +6,7 @@
 # http://www.rightscale.com/terms.php and, if applicable, other agreements
 # such as a RightScale Master Subscription Agreement.
 
-class Chef::Recipe
+class Chef::Resource::Template
   include Rschef::Helper
 end
 
