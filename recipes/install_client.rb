@@ -91,7 +91,7 @@ extension << " --override-runlist #{node[:chef][:client][:runlist_override]}" \
 
 # Runs the Chef Client using command extensions.
 execute "run chef-client" do
-  command "umask 077; chef-client #{extension}"
+  command "chef-client #{extension}"
 end
 
 log "  Chef Client role(s) are: #{node[:chef][:client][:current_roles]}"
