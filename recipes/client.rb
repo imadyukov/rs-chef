@@ -13,6 +13,26 @@ class Chef::Resource::Template
   include Rschef::Helper
 end
 
+node.override[:coupa][:role] = node[:chef][:client][:roles].split(",").first.strip
+
+template "/etc/chef_coupa_attr.json" do
+  source "chef_coupa_attr.json.erb"
+  owner "root"
+  group "root"
+  mode "0400"
+end
+
+# Ohai not getting ec2 metadata in VPC, trick is to set the hint for ec2 -
+# Already added ohai hists to coupa-baker
+directory "/etc/chef/ohai/hints" do
+  recursive true
+  action :create
+end
+
+file "/etc/chef/ohai/hints/ec2.json" do
+  action :create_if_missing
+end
+
 cookbook_file "/tmp/install.sh" do
   source "install.sh"
   mode "0755"

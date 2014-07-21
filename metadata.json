@@ -29,7 +29,7 @@
       "required": "optional",
       "default": "11.12.8-2",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -42,7 +42,7 @@
       "description": "Enter the URL to connect to the remote Chef Server. To connect to the Opscode Hosted Chef use the following syntax https://api.opscode.com/organizations/ORGNAME. Example: http://example.com:4000/chef",
       "required": "required",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -55,7 +55,7 @@
       "description": "Private SSH key which will be used to authenticate the Chef Client on the remote Chef Server.",
       "required": "required",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -68,7 +68,7 @@
       "description": "Validation name, along with the private SSH key, is used to determine whether the Chef Client may register with the Chef Server. The validation_name located on the Server and in the Client configuration file must match. Example: ORG-validator",
       "required": "required",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -81,7 +81,7 @@
       "description": "Name which will be used to authenticate the Chef Client on the remote Chef Server. If nothing is specified, the instance FQDN will be used. Example: chef-client-host1",
       "required": "optional",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -95,7 +95,7 @@
       "required": "optional",
       "default": "_default",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -108,7 +108,7 @@
       "description": "Company name to be set in the Client configuration file. This attribute is applicable for Opscode Hosted Chef Server. The company name specified in both the Server and the Client configuration file must match. Example: MyCompany",
       "required": "optional",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -121,7 +121,7 @@
       "description": "Comma-separated list of roles which will be applied to this instance. The Chef Client will execute the roles in the order specified here. Example: webserver, monitoring",
       "required": "optional",
       "recipes": [
-        "rs-chef::install_client",
+        "rs-chef::client",
         "rs-chef::do_client_converge"
       ],
       "choice": [
@@ -135,7 +135,7 @@
       "description": "A custom JSON string to override the first run of chef-client. Example: recipe[ntp::default]",
       "required": "optional",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -149,7 +149,7 @@
       "required": "optional",
       "default": "info",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -163,7 +163,7 @@
       "required": "optional",
       "default": "/var/log/chef-client.log",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
@@ -177,10 +177,131 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "rs-chef::install_client"
+        "rs-chef::client"
       ],
       "choice": [
 
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/deployment": {
+      "display_name": "Coupa Deployment",
+      "description": "Specify the deployment name",
+      "required": "required",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/serverdomain": {
+      "display_name": "Coupa serverdomain",
+      "description": "Specify the serverdomain coupadev.com/coupahost.com",
+      "required": "required",
+      "choice": [
+        "coupadev.com",
+        "coupahost.com"
+      ],
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/nodename": {
+      "display_name": "Node name for the server",
+      "description": "Specify the nickname",
+      "required": "optional",
+      "default": "",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/vol/stripe_count": {
+      "display_name": "How many stripes of EBS",
+      "description": "Number of stripes for volume, dafault is 0 meaning do not attach any volume",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/vol/iops": {
+      "display_name": "Total IOPS",
+      "description": "IOPS for all the volume stripes, default is none",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/vol/size": {
+      "display_name": "Total size for all stripes",
+      "description": "Total size in GB, sum of all volume stripes, default is 50GB",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/dns/update": {
+      "display_name": "Change the DNS record",
+      "description": "Setting none do not change anything, private_ip to change dns to server local_ip or pick public IP for EIP",
+      "required": "optional",
+      "choice": [
+        "none",
+        "private_ip",
+        "public_ip"
+      ],
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/dns/id": {
+      "display_name": "Id of the record",
+      "description": "Id of the DNS record at the DNS provider",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/dns/provider": {
+      "display_name": "DNS provider",
+      "description": "Enable persistent volume, on AWS that is additional EBS volume, default DNSMadeEasy",
+      "required": "optional",
+      "choice": [
+        "DNSMadeEasy"
+      ],
+      "recipes": [
+        "rs-chef::client"
       ],
       "calculated": false,
       "type": "string"
@@ -189,7 +310,7 @@
   "groupings": {
   },
   "recipes": {
-    "rs-chef::install_client": "Installs and configures the Chef Client.",
+    "rs-chef::client": "Propagate coupa attributes",
     "rs-chef::do_client_converge": "Allows manual update/re-run of runlist on the Chef Client.",
     "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server."
   },

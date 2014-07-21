@@ -10,7 +10,7 @@ supports "centos"
 supports "redhat"
 supports "ubuntu"
 
-recipe "rs-chef::install_client",
+recipe "rs-chef::client",
   "Installs and configures the Chef Client."
 
 recipe "rs-chef::do_client_converge",
@@ -19,6 +19,9 @@ recipe "rs-chef::do_client_converge",
 recipe "rs-chef::do_unregister_request",
   "Deletes the node and registered client on the Chef Server."
 
+recipe "rs-chef::client",
+  "Propagate coupa attributes"
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
@@ -26,7 +29,7 @@ attribute "chef/client/version",
     " Server. Example: 11.12.8-2",
   :required => "optional",
   :default => "11.12.8-2",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/server_url",
   :display_name => "Chef Server URL",
@@ -36,7 +39,7 @@ attribute "chef/client/server_url",
     " https://api.opscode.com/organizations/ORGNAME." +
     " Example: http://example.com:4000/chef",
   :required => "required",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/validator_pem",
   :display_name => "Private Key to Register the Chef Client with the Chef" +
@@ -45,7 +48,7 @@ attribute "chef/client/validator_pem",
     "Private SSH key which will be used to authenticate the Chef Client on" +
     " the remote Chef Server.",
   :required => "required",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/validation_name",
   :display_name => "Chef Client Validation Name",
@@ -55,7 +58,7 @@ attribute "chef/client/validation_name",
     " validation_name located on the Server and in the Client configuration" +
     " file must match. Example: ORG-validator",
   :required => "required",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/node_name",
   :display_name => "Chef Client Node Name",
@@ -64,7 +67,7 @@ attribute "chef/client/node_name",
     " Chef Server. If nothing is specified, the instance FQDN will be used." +
     " Example: chef-client-host1",
   :required => "optional",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/environment",
   :display_name => "Chef Client Environment",
@@ -73,7 +76,7 @@ attribute "chef/client/environment",
     " Example: development",
   :required => "optional",
   :default => "_default",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/company",
   :display_name => "Chef Company Name",
@@ -83,7 +86,7 @@ attribute "chef/client/company",
     " specified in both the Server and the Client configuration file must" +
     " match. Example: MyCompany",
   :required => "optional",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/roles",
   :display_name => "Set of Client Roles",
@@ -92,7 +95,7 @@ attribute "chef/client/roles",
     " The Chef Client will execute the roles in the order specified here." +
     " Example: webserver, monitoring",
   :required => "optional",
-  :recipes => ["rs-chef::install_client", "rs-chef::do_client_converge"]
+  :recipes => ["rs-chef::client", "rs-chef::do_client_converge"]
 
 attribute "chef/client/runlist_override",
   :display_name => "JSON String used to override the first run of chef-client.",
@@ -100,7 +103,7 @@ attribute "chef/client/runlist_override",
     "A custom JSON string to override the first run of chef-client." +
     " Example: recipe[ntp::default]",
   :required => "optional",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/log_level",
   :display_name => "Logging Level",
@@ -108,7 +111,7 @@ attribute "chef/client/log_level",
     "The level of logging that will be stored in the log file. Example: debug",
   :required => "optional",
   :default => "info",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/log_location",
   :display_name => "Log File Location",
@@ -116,7 +119,7 @@ attribute "chef/client/log_location",
     "The location of the log file. Example: /var/log/chef-client.log",
   :required => "optional",
   :default => "/var/log/chef-client.log",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
 
 attribute "chef/client/data_bag_secret",
   :display_name => "Data Bag Secret Key",
@@ -125,4 +128,73 @@ attribute "chef/client/data_bag_secret",
     " Example: cred:CHEF_DATA_BAG_SECRET",
   :required => "optional",
   :default => "",
-  :recipes => ["rs-chef::install_client"]
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/deployment",
+  :display_name => "Coupa Deployment",
+  :description =>
+    "Specify the deployment name",
+  :required => "required",
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/serverdomain",
+  :display_name => "Coupa serverdomain",
+  :description =>
+    "Specify the serverdomain coupadev.com/coupahost.com",
+  :required => "required",
+  :choice => ["coupadev.com", "coupahost.com"],
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/nodename",
+  :display_name => "Node name for the server",
+  :description =>
+    "Specify the nickname",
+  :required => "optional",
+  :default => "",
+  :recipes => ["rs-chef::client"]
+
+# Enable EBS is needed
+attribute "coupa/vol/stripe_count",
+  :display_name => "How many stripes of EBS",
+  :description =>
+    "Number of stripes for volume, dafault is 0 meaning do not attach any volume",
+  :required => "optional",
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/vol/iops",
+  :display_name => "Total IOPS",
+  :description =>
+    "IOPS for all the volume stripes, default is none",
+  :required => "optional",
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/vol/size",
+  :display_name => "Total size for all stripes",
+  :description =>
+    "Total size in GB, sum of all volume stripes, default is 50GB",
+  :required => "optional",
+  :recipes => ["rs-chef::client"]
+
+# Change DNSMadeEasy Id
+attribute "coupa/dns/update",
+  :display_name => "Change the DNS record",
+  :description =>
+    "Setting none do not change anything, private_ip to change dns to server local_ip or pick public IP for EIP",
+  :required => "optional",
+  :choice => ["none", "private_ip", "public_ip"],
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/dns/id",
+  :display_name => "Id of the record",
+  :description =>
+    "Id of the DNS record at the DNS provider",
+  :required => "optional",
+  :recipes => ["rs-chef::client"]
+
+attribute "coupa/dns/provider",
+  :display_name => "DNS provider",
+  :description =>
+    "Enable persistent volume, on AWS that is additional EBS volume, default DNSMadeEasy",
+  :required => "optional",
+  :choice => ["DNSMadeEasy"],
+  :recipes => ["rs-chef::client"]
