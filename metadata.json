@@ -71,7 +71,8 @@
       "description": "Private SSH key which will be used to authenticate the Chef Client on the remote Chef Server.",
       "required": "required",
       "recipes": [
-        "rs-chef::client"
+        "rs-chef::client",
+        "rs-chef::server"
       ],
       "choice": [
 

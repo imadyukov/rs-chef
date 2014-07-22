@@ -66,7 +66,7 @@ attribute "chef/client/validator_pem",
     "Private SSH key which will be used to authenticate the Chef Client on" +
     " the remote Chef Server.",
   :required => "required",
-  :recipes => ["rs-chef::client"]
+  :recipes => ["rs-chef::client", "rs-chef::server"]
 
 attribute "chef/client/validation_name",
   :display_name => "Chef Client Validation Name",
