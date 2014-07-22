@@ -38,3 +38,14 @@ end
 include_recipe "rs-chef::server_monitoring"
 
 #######################################################################
+
+#
+# Install chef server
+#
+
+execute "Install chef server" do
+  command "yum install -y https://opscode-omnibus-packages.s3.amazonaws.com/el/6/x86_64/chef-server-#{node[:chef][:server][:version]}.el6.x86_64.rpm"
+  not_if { system("yum info chef-server") }
+end
+
+#######################################################################
