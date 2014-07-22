@@ -30,3 +30,11 @@ unless api.buckets[bucket_name].exists?
 end
 
 #######################################################################
+
+#
+# Monitoring
+#
+
+include_recipe "rs-chef::server_monitoring"
+
+#######################################################################

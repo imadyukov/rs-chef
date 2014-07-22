@@ -10,6 +10,9 @@ supports "centos"
 supports "redhat"
 supports "ubuntu"
 
+depends "collectd", "~> 1.1.0"
+depends "machine_tag", "~> 1.0.6"
+
 recipe "rs-chef::client",
   "Installs and configures the Chef Client."
 
@@ -24,6 +27,9 @@ recipe "rs-chef::client",
 
 recipe "rs-chef::server",
   "Installs and configures chef server"
+
+recipe "rs-chef::server_monitoring",
+  "Set up RS monitoring"
 
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
