@@ -190,7 +190,8 @@
       "description": "Specify the deployment name",
       "required": "required",
       "recipes": [
-        "rs-chef::client"
+        "rs-chef::client",
+        "rs-chef::server"
       ],
       "choice": [
 
@@ -207,7 +208,8 @@
         "coupahost.com"
       ],
       "recipes": [
-        "rs-chef::client"
+        "rs-chef::client",
+        "rs-chef::server"
       ],
       "calculated": false,
       "type": "string"
@@ -305,6 +307,32 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "coupa/s3/access_key": {
+      "display_name": "AWS ACCESS KEY for S3",
+      "description": "The aws access key to be used to work with S3 buckets",
+      "required": "required",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/s3/secret_key": {
+      "display_name": "AWS SECRET KEY for S3",
+      "description": "The aws access secret key to be used to work with S3 buckets",
+      "required": "required",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
@@ -312,7 +340,8 @@
   "recipes": {
     "rs-chef::client": "Propagate coupa attributes",
     "rs-chef::do_client_converge": "Allows manual update/re-run of runlist on the Chef Client.",
-    "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server."
+    "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server.",
+    "rs-chef::server": "Installs and configures chef server"
   },
   "version": "15.0.0"
 }

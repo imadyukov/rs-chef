@@ -22,6 +22,9 @@ recipe "rs-chef::do_unregister_request",
 recipe "rs-chef::client",
   "Propagate coupa attributes"
 
+recipe "rs-chef::server",
+  "Installs and configures chef server"
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
@@ -135,7 +138,7 @@ attribute "coupa/deployment",
   :description =>
     "Specify the deployment name",
   :required => "required",
-  :recipes => ["rs-chef::client"]
+  :recipes => ["rs-chef::client", "rs-chef::server"]
 
 attribute "coupa/serverdomain",
   :display_name => "Coupa serverdomain",
@@ -143,7 +146,7 @@ attribute "coupa/serverdomain",
     "Specify the serverdomain coupadev.com/coupahost.com",
   :required => "required",
   :choice => ["coupadev.com", "coupahost.com"],
-  :recipes => ["rs-chef::client"]
+  :recipes => ["rs-chef::client", "rs-chef::server"]
 
 attribute "coupa/nodename",
   :display_name => "Node name for the server",
@@ -198,3 +201,17 @@ attribute "coupa/dns/provider",
   :required => "optional",
   :choice => ["DNSMadeEasy"],
   :recipes => ["rs-chef::client"]
+
+attribute "coupa/s3/access_key",
+  :display_name => "AWS ACCESS KEY for S3",
+  :description =>
+    "The aws access key to be used to work with S3 buckets",
+  :required => true,
+  :recipes => ["rs-chef::server"]
+
+attribute "coupa/s3/secret_key",
+  :display_name => "AWS SECRET KEY for S3",
+  :description =>
+    "The aws access secret key to be used to work with S3 buckets",
+  :required => true,
+  :recipes => ["rs-chef::server"]
