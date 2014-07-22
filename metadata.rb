@@ -12,6 +12,7 @@ supports "ubuntu"
 
 depends "collectd", "~> 1.1.0"
 depends "machine_tag", "~> 1.0.6"
+depends "postgresql", "~> 3.4.1"
 
 recipe "rs-chef::client",
   "Installs and configures the Chef Client."
@@ -30,6 +31,9 @@ recipe "rs-chef::server",
 
 recipe "rs-chef::server_monitoring",
   "Set up RS monitoring"
+
+recipe "rs-chef::server_postgresql",
+  "Set up postgresql service"
 
 attribute "chef/client/version",
   :display_name => "Chef Client Version",

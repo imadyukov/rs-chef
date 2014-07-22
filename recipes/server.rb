@@ -49,6 +49,13 @@ execute "Install chef server" do
 end
 
 #######################################################################
+#
+# External database for chef server
+#
+
+include_recipe "rs-chef::server_postgresql"
+
+#######################################################################
 
 #
 # Configure chef server
@@ -62,6 +69,11 @@ file "/etc/chef-server/chef-validator.pem" do
 end
 
 chef_server_options = {
+  'postgresql' => {
+    'enable' => false,
+    'sql_password' => node['postgresql']['password']['opscode_chef'],
+    'sql_ro_password' => node['postgresql']['password']['opscode_chef_ro'],
+  },
   'bookshelf' => {
     'enable' => false,
     'url' => "https://s3.amazonaws.com",

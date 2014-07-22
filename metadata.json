@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "collectd": "~> 1.1.0",
-    "machine_tag": "~> 1.0.6"
+    "machine_tag": "~> 1.0.6",
+    "postgresql": "~> 3.4.1"
   },
   "recommendations": {
   },
@@ -359,7 +360,8 @@
     "rs-chef::do_client_converge": "Allows manual update/re-run of runlist on the Chef Client.",
     "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server.",
     "rs-chef::server": "Installs and configures chef server",
-    "rs-chef::server_monitoring": "Set up RS monitoring"
+    "rs-chef::server_monitoring": "Set up RS monitoring",
+    "rs-chef::server_postgresql": "Set up postgresql service"
   },
   "version": "15.0.0"
 }
