@@ -13,6 +13,7 @@ supports "ubuntu"
 depends "collectd", "~> 1.1.0"
 depends "machine_tag", "~> 1.0.6"
 depends "postgresql", "~> 3.4.1"
+depends "database", "~> 1.3.8"
 
 recipe "rs-chef::client",
   "Installs and configures the Chef Client."
@@ -232,5 +233,23 @@ attribute "coupa/s3/secret_key",
   :display_name => "AWS SECRET KEY for S3",
   :description =>
     "The aws access secret key to be used to work with S3 buckets",
+  :required => true,
+  :recipes => ["rs-chef::server"]
+
+attribute "chef/server/db_master_user",
+  :display_name => "Chef Server DB Master User",
+  :description => "The username to be used to connect to chef server database with the root accees",
+  :required => true,
+  :recipes => ["rs-chef::server"]
+
+attribute "chef/server/db_master_user_password",
+  :display_name => "Chef Server DB Master Password",
+  :description => "The password to be used to connect to chef server database with the root accees",
+  :required => true,
+  :recipes => ["rs-chef::server"]
+
+attribute "chef/server/db_endpoint",
+  :display_name => "Chef Server DB Endpoint",
+  :description => "The endpoint of chef server database. Format: Host:Port.",
   :required => true,
   :recipes => ["rs-chef::server"]

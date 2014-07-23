@@ -73,6 +73,7 @@ chef_server_options = {
     'enable' => false,
     'sql_password' => node['postgresql']['password']['opscode_chef'],
     'sql_ro_password' => node['postgresql']['password']['opscode_chef_ro'],
+    'vip' => node[:chef][:server][:db_endpoint].split(":").first,
   },
   'bookshelf' => {
     'enable' => false,

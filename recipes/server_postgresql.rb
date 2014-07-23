@@ -1,44 +1,46 @@
-include_recipe "postgresql::server"
-include_recipe "postgresql::config_initdb"
-include_recipe "postgresql::config_pgtune"
-
-# Create the databases
-pg_user = "postgres"
-
-class Chef::Resource
-  include Opscode::PostgresqlHelpers
-end
+include_recipe "postgresql::client"
+include_recipe "postgresql::ruby"
 
 ###
 # Create the opscode_chef database, migrate it, and create the users we need, and grant them
 # privileges.
 ###
 db_name = "opscode_chef"
+postgresql_connection_info = {
+  :host => node[:chef][:server][:db_endpoint].split(":").first,
+  :port => node[:chef][:server][:db_endpoint].split(":").last,
+  :username => node[:chef][:server][:db_master_user],
+  :password => node[:chef][:server][:db_master_user_password],
+}
 
-execute "create #{db_name} database" do
-  command "/usr/bin/createdb -T template0 --port 5432 -E UTF-8 #{db_name}"
-  user pg_user
-  not_if { execute_sql('\l').split("\n").select{|x| x.match(/^#{db_name}\|/)}.size > 0 }
-  retries 30
+file "/root/.pgpass" do
+  mode 0600
+  content "#{postgresql_connection_info[:host]}:#{postgresql_connection_info[:port]}:*:#{postgresql_connection_info[:username]}:#{postgresql_connection_info[:password]}\n"
+  action :create
+end
+
+postgresql_database db_name do
+  connection postgresql_connection_info
+  encoding 'UTF-8'
+  action :create
   notifies :run, 'execute[install_schema]', :immediately
 end
 
 execute "install_schema" do
-  command "/opt/chef-server/embedded/bin/sqitch --db-user #{pg_user} deploy --verify" # same as preflight
+  command "/opt/chef-server/embedded/bin/sqitch --db-user #{postgresql_connection_info[:username]} --db-host #{postgresql_connection_info[:host]} --db-port #{postgresql_connection_info[:port]} deploy --verify" # same as preflight
   cwd "/opt/chef-server/embedded/service/chef-server-schema"
-  user pg_user
+  environment({'HOME' => '/root'})
   action :nothing
 end
 
 # Create Database Users
 node['postgresql']['password'].each do |pg_u, pg_p|
-  next if pg_u == pg_user
+  next if pg_u == "postgres"
 
-  ruby_block "Create #{pg_u} user in postgresql" do
-    block do
-      execute_sql("CREATE USER #{pg_u} PASSWORD '#{pg_p}';")
-    end
-    not_if { execute_sql('\du').split("\n").select{|x| x.match(/^#{pg_u}\|/)}.size > 0 }
+  postgresql_database_user pg_u do
+    password pg_p
+    connection postgresql_connection_info
+    action :create
   end
 
   grant_commands = if pg_u.end_with?("_ro")
@@ -63,11 +65,14 @@ node['postgresql']['password'].each do |pg_u, pg_p|
   ]
 
   grant_commands.each do |grant_command|
-    ruby_block grant_command do
-      block do
-        execute_sql(grant_command)
-      end
+
+    postgresql_database grant_command do
+      connection postgresql_connection_info
+      sql grant_command
+      database_name db_name
+      action :query
     end
+
   end
 
 end
