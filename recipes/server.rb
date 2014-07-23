@@ -95,8 +95,11 @@ file "/etc/chef-server/chef-server.rb" do
         "#{obj}['#{obj_atr}'] = #{atr_val}"
       end
     end.flatten.join("\n") + "\n")
+  notifies :run, 'execute[chef-server-ctl reconfigure]', :immediately
 end
 
-execute "chef-server-ctl reconfigure"
+execute "chef-server-ctl reconfigure" do
+  action :nothing
+end
 
 #######################################################################
