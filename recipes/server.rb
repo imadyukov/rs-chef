@@ -1,5 +1,5 @@
 #
-# Install AWS SDK for Ruby
+# Install AWS SDK and DnsMadeEasy gems for Ruby
 #
 
 %w(gcc libxml2-devel libxslt-devel).each do |pkg|
@@ -8,11 +8,13 @@
   end.run_action(:install)
 end
 
-gem_package "aws-sdk" do
-  gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
-  action :nothing
-  options("-- --use-system-libraries")
-end.run_action(:install)
+%w(dnsmadeeasy-api aws-sdk).each do |gem_p|
+  gem_package gem_p do
+    gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
+    action :nothing
+    options("-- --use-system-libraries")
+  end.run_action(:install)
+end
 Gem.clear_paths
 
 #######################################################################
@@ -84,6 +86,14 @@ chef_server_options = {
   },
   'erchef' => {
     's3_bucket' => bucket_name,
+  },
+  'nginx' => {
+    'server_name' => "#{node[:coupa][:nodename]}.int.#{node[:coupa][:serverdomain]}",
+    'ssl_company_name' => "Coupa",
+    'ssl_email_address' => "ops12@#{node[:coupa][:serverdomain]}",
+    'ssl_locality_name' => "San Francisco",
+    'ssl_state_name' => "CA",
+    'url' => "https://#{node[:coupa][:nodename]}.int.#{node[:coupa][:serverdomain]}",
   }
 }
 
@@ -100,6 +110,26 @@ end
 
 execute "chef-server-ctl reconfigure" do
   action :nothing
+end
+
+#######################################################################
+
+#
+# Set up a DNS names
+#
+
+coupa_dns "#{node[:coupa][:nodename]}.int" do
+  dns_domain node[:coupa][:serverdomain]
+  dns_ip node[:ipaddress]
+  api_key node[:coupa][:dns][:api_key]
+  secret_key node[:coupa][:dns][:secret_key]
+end
+
+coupa_dns node[:coupa][:nodename] do
+  dns_domain node[:coupa][:serverdomain]
+  dns_ip node[:cloud][:public_ipv4]
+  api_key node[:coupa][:dns][:api_key]
+  secret_key node[:coupa][:dns][:secret_key]
 end
 
 #######################################################################

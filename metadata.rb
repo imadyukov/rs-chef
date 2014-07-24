@@ -174,7 +174,7 @@ attribute "coupa/nodename",
     "Specify the nickname",
   :required => "optional",
   :default => "",
-  :recipes => ["rs-chef::client"]
+  :recipes => ["rs-chef::client", "rs-chef::server"]
 
 # Enable EBS is needed
 attribute "coupa/vol/stripe_count",
@@ -198,29 +198,19 @@ attribute "coupa/vol/size",
   :required => "optional",
   :recipes => ["rs-chef::client"]
 
-# Change DNSMadeEasy Id
-attribute "coupa/dns/update",
-  :display_name => "Change the DNS record",
+attribute "coupa/dns/api_key",
+  :display_name => "DNS API Key",
   :description =>
-    "Setting none do not change anything, private_ip to change dns to server local_ip or pick public IP for EIP",
-  :required => "optional",
-  :choice => ["none", "private_ip", "public_ip"],
-  :recipes => ["rs-chef::client"]
+    "The API key to be used to access to DnsMadeEasy provider",
+  :required => true,
+  :recipes => ["rs-chef::server"]
 
-attribute "coupa/dns/id",
-  :display_name => "Id of the record",
+attribute "coupa/dns/secret_key",
+  :display_name => "DNS API Secret Key",
   :description =>
-    "Id of the DNS record at the DNS provider",
-  :required => "optional",
-  :recipes => ["rs-chef::client"]
-
-attribute "coupa/dns/provider",
-  :display_name => "DNS provider",
-  :description =>
-    "Enable persistent volume, on AWS that is additional EBS volume, default DNSMadeEasy",
-  :required => "optional",
-  :choice => ["DNSMadeEasy"],
-  :recipes => ["rs-chef::client"]
+    "The API Secret key to be used to access to DnsMadeEasy provider",
+  :required => true,
+  :recipes => ["rs-chef::server"]
 
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",

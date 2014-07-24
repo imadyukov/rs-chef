@@ -239,7 +239,8 @@
       "required": "optional",
       "default": "",
       "recipes": [
-        "rs-chef::client"
+        "rs-chef::client",
+        "rs-chef::server"
       ],
       "choice": [
 
@@ -286,27 +287,12 @@
       "calculated": false,
       "type": "string"
     },
-    "coupa/dns/update": {
-      "display_name": "Change the DNS record",
-      "description": "Setting none do not change anything, private_ip to change dns to server local_ip or pick public IP for EIP",
-      "required": "optional",
-      "choice": [
-        "none",
-        "private_ip",
-        "public_ip"
-      ],
+    "coupa/dns/api_key": {
+      "display_name": "DNS API Key",
+      "description": "The API key to be used to access to DnsMadeEasy provider",
+      "required": "required",
       "recipes": [
-        "rs-chef::client"
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "coupa/dns/id": {
-      "display_name": "Id of the record",
-      "description": "Id of the DNS record at the DNS provider",
-      "required": "optional",
-      "recipes": [
-        "rs-chef::client"
+        "rs-chef::server"
       ],
       "choice": [
 
@@ -314,15 +300,15 @@
       "calculated": false,
       "type": "string"
     },
-    "coupa/dns/provider": {
-      "display_name": "DNS provider",
-      "description": "Enable persistent volume, on AWS that is additional EBS volume, default DNSMadeEasy",
-      "required": "optional",
-      "choice": [
-        "DNSMadeEasy"
-      ],
+    "coupa/dns/secret_key": {
+      "display_name": "DNS API Secret Key",
+      "description": "The API Secret key to be used to access to DnsMadeEasy provider",
+      "required": "required",
       "recipes": [
-        "rs-chef::client"
+        "rs-chef::server"
+      ],
+      "choice": [
+
       ],
       "calculated": false,
       "type": "string"
