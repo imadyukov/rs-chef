@@ -253,3 +253,11 @@ attribute "chef/server/db_endpoint",
   :description => "The endpoint of chef server database. Format: Host:Port.",
   :required => true,
   :recipes => ["rs-chef::server"]
+
+attribute "coupa/rs_sketchy",
+  :display_name => "RS Sketchy",
+  :description => "The sketchy server in RS infrastructure. " +
+  "Since the RS_SKETCHY variable in /var/spool/cloud/user-data.rb is deprecated, " +
+  "we should use RS input to set it up. Required for monitoring.",
+  :required => true,
+  :recipes => ["rs-chef::server", "rs-chef::client"]

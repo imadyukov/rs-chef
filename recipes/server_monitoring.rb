@@ -22,7 +22,7 @@ collectd_plugin "users"
 
 collectd_plugin 'network' do
   options({
-    "Server \"#{ENV['RS_SKETCHY']}\"" => "3011",
+    "Server \"#{node[:coupa][:rs_sketchy]}\"" => "3011",
   })
 end
 

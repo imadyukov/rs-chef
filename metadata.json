@@ -391,6 +391,20 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "coupa/rs_sketchy": {
+      "display_name": "RS Sketchy",
+      "description": "The sketchy server in RS infrastructure. Since the RS_SKETCHY variable in /var/spool/cloud/user-data.rb is deprecated, we should use RS input to set it up. Required for monitoring.",
+      "required": "required",
+      "recipes": [
+        "rs-chef::server",
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
