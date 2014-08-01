@@ -391,6 +391,32 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "coupa/run_recipe": {
+      "display_name": "Recipe Name",
+      "description": "The name of a custom recipe needs to be run.",
+      "required": "required",
+      "recipes": [
+        "rs-chef::run_recipe"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "coupa/run_recipe_json": {
+      "display_name": "Recipe Attributes",
+      "description": "The json string needs to be passed to chef-client on run custom recipe.",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::run_recipe"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
@@ -401,7 +427,8 @@
     "rs-chef::do_unregister_request": "Deletes the node and registered client on the Chef Server.",
     "rs-chef::server": "Installs and configures chef server",
     "rs-chef::server_monitoring": "Set up RS monitoring",
-    "rs-chef::server_postgresql": "Set up postgresql service"
+    "rs-chef::server_postgresql": "Set up postgresql service",
+    "rs-chef::run_recipe": "Run custom recipe"
   },
   "version": "15.0.0"
 }

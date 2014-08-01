@@ -36,6 +36,9 @@ recipe "rs-chef::server_monitoring",
 recipe "rs-chef::server_postgresql",
   "Set up postgresql service"
 
+recipe "rs-chef::run_recipe",
+  "Run custom recipe"
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
@@ -251,3 +254,15 @@ attribute "coupa/rs_sketchy",
   "we should use RS input to set it up. Required for monitoring.",
   :required => true,
   :recipes => ["rs-chef::server", "rs-chef::client"]
+
+attribute "coupa/run_recipe",
+  :display_name => "Recipe Name",
+  :description => "The name of a custom recipe needs to be run.",
+  :required => true,
+  :recipes => ["rs-chef::run_recipe"]
+
+attribute "coupa/run_recipe_json",
+  :display_name => "Recipe Attributes",
+  :description => "The json string needs to be passed to chef-client on run custom recipe.",
+  :required => false,
+  :recipes => ["rs-chef::run_recipe"]
