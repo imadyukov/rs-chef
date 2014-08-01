@@ -39,6 +39,9 @@ recipe "rs-chef::server_postgresql",
 recipe "rs-chef::run_recipe",
   "Run custom recipe"
 
+recipe "rs-chef::decomm",
+  "Run decommission role"
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
