@@ -70,6 +70,14 @@ file "/etc/chef-server/chef-validator.pem" do
   content node[:chef][:client][:validator_pem]
 end
 
+file "/etc/chef-server/chef-webui.pem" do
+  mode 0640
+  content lazy {
+    begin r = IO.popen("openssl genrsa 2048") ;r.read ensure r.close end
+  }
+  action :create_if_missing
+end
+
 directory "/etc/ssl/certs" do
   recursive true
 end
