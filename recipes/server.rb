@@ -113,23 +113,3 @@ execute "chef-server-ctl reconfigure" do
 end
 
 #######################################################################
-
-#
-# Set up a DNS names
-#
-
-coupa_dns "#{node[:coupa][:nodename]}.int" do
-  dns_domain node[:coupa][:serverdomain]
-  dns_ip node[:ipaddress]
-  api_key node[:coupa][:dns][:api_key]
-  secret_key node[:coupa][:dns][:secret_key]
-end
-
-coupa_dns node[:coupa][:nodename] do
-  dns_domain node[:coupa][:serverdomain]
-  dns_ip node[:cloud][:public_ipv4]
-  api_key node[:coupa][:dns][:api_key]
-  secret_key node[:coupa][:dns][:secret_key]
-end
-
-#######################################################################
