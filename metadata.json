@@ -378,6 +378,32 @@
       "calculated": false,
       "type": "string"
     },
+    "chef/server/ssl_cert": {
+      "display_name": "SSL Cert",
+      "description": "The ssl certificate to be used on nginx endpoint.",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "chef/server/ssl_cert_key": {
+      "display_name": "SSL Cert Key",
+      "description": "The ssl certificate key to be used on nginx endpoint.",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "coupa/rs_sketchy": {
       "display_name": "RS Sketchy",
       "description": "The sketchy server in RS infrastructure. Since the RS_SKETCHY variable in /var/spool/cloud/user-data.rb is deprecated, we should use RS input to set it up. Required for monitoring.",

@@ -250,6 +250,18 @@ attribute "chef/server/db_endpoint",
   :required => true,
   :recipes => ["rs-chef::server"]
 
+attribute "chef/server/ssl_cert",
+  :display_name => "SSL Cert",
+  :description => "The ssl certificate to be used on nginx endpoint.",
+  :required => false,
+  :recipes => ["rs-chef::server"]
+
+attribute "chef/server/ssl_cert_key",
+  :display_name => "SSL Cert Key",
+  :description => "The ssl certificate key to be used on nginx endpoint.",
+  :required => false,
+  :recipes => ["rs-chef::server"]
+
 attribute "coupa/rs_sketchy",
   :display_name => "RS Sketchy",
   :description => "The sketchy server in RS infrastructure. " +
