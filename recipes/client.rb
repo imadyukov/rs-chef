@@ -60,6 +60,12 @@ execute "install chef client" do
   }
 end
 
+file "/etc/chef/https_ca_file.crt" do
+  content node[:chef][:client][:ca_file]
+  mode 0600
+  not_if { node[:chef][:client][:ca_file].nil? }
+end
+
 log "  Chef Client version #{node[:chef][:client][:version]} installation is" +
   " completed."
 
@@ -76,6 +82,7 @@ template "#{node[:chef][:client][:config_dir]}/client.rb" do
     :server_url => node[:chef][:client][:server_url],
     :validation_name => node[:chef][:client][:validation_name],
     :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
+    :ca_file => node[:chef][:client][:ca_file],
     :log_level => node[:chef][:client][:log_level],
     :log_location => node[:chef][:client][:log_location]
   )

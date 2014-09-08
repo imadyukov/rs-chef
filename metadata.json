@@ -82,6 +82,19 @@
       "calculated": false,
       "type": "string"
     },
+    "chef/client/ca_file": {
+      "display_name": "HTTPS CA File",
+      "description": "CA File to be used to verify https connection to a chef server.",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "chef/client/validation_name": {
       "display_name": "Chef Client Validation Name",
       "description": "Validation name, along with the private SSH key, is used to determine whether the Chef Client may register with the Chef Server. The validation_name located on the Server and in the Client configuration file must match. Example: ORG-validator",

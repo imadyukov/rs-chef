@@ -79,6 +79,12 @@ attribute "chef/client/validator_pem",
   :required => "required",
   :recipes => ["rs-chef::client", "rs-chef::server"]
 
+attribute "chef/client/ca_file",
+  :display_name => "HTTPS CA File",
+  :description => "CA File to be used to verify https connection to a chef server.",
+  :required => false,
+  :recipes => ["rs-chef::client"]
+
 attribute "chef/client/validation_name",
   :display_name => "Chef Client Validation Name",
   :description =>
