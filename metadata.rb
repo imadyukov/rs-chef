@@ -156,6 +156,14 @@ attribute "chef/client/log_location",
   :default => "/var/log/chef-client.log",
   :recipes => ["rs-chef::client"]
 
+attribute "chef/client/strace",
+  :display_name => "Do a strace for chef-client run",
+  :description => "If true, chef-client will run under strace to trace all system calls.",
+  :required => false,
+  :default => "false",
+  :choice => ["false", "true"],
+  :recipes => ["rs-chef::client"]
+
 attribute "chef/client/data_bag_secret",
   :display_name => "Data Bag Secret Key",
   :description =>

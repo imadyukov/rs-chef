@@ -203,6 +203,21 @@
       "calculated": false,
       "type": "string"
     },
+    "chef/client/strace": {
+      "display_name": "Do a strace for chef-client run",
+      "description": "If true, chef-client will run under strace to trace all system calls.",
+      "required": "optional",
+      "default": "false",
+      "choice": [
+        "false",
+        "true"
+      ],
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "calculated": false,
+      "type": "string"
+    },
     "chef/client/data_bag_secret": {
       "display_name": "Data Bag Secret Key",
       "description": "A secret key used to encrypt data bag items. Example: cred:CHEF_DATA_BAG_SECRET",

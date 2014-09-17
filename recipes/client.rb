@@ -132,9 +132,11 @@ extension << " --environment #{node[:chef][:client][:environment]}" \
 extension << " --override-runlist #{node[:chef][:client][:runlist_override]}" \
   unless node[:chef][:client][:runlist_override].empty?
 
+strace_chef = (node[:chef][:client][:strace] == "true") ? "strace -f -o #{node[:chef][:client][:log_location]}.strace -T -ttt" : ""
+
 # Runs the Chef Client using command extensions.
 execute "run chef-client" do
-  command "chef-client #{extension}"
+  command "#{strace_chef} chef-client #{extension}"
 end
 
 log "  Chef Client role(s) are: #{node[:chef][:client][:current_roles]}"
