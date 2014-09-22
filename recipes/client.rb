@@ -13,6 +13,28 @@ class Chef::Resource::Template
   include Rschef::Helper
 end
 
+# Usually, a bundler deletes any pem files, so we need to be sure that we have CA pems.
+ruby_block "Check ca-certificates" do
+  block do
+    list_files = begin
+      r = IO.popen("rpm -ql ca-certificates")
+      r.readlines.map {|x| x.chomp }
+    ensure
+      r.close if (r && !r.closed?)
+    end
+
+    list_files.reject! {|x| ::File.exists?(x) }
+
+    # If we found a files that must be on FS but they don't, we reinstall ca-certificates
+    unless list_files.empty?
+      Chef::Log.info "Found missing files: #{list_files.join(", ")}"
+      Chef::Log.info "Reinstalling ca-certificates..."
+      system("yum reinstall -y ca-certificates")
+    end
+  end
+end
+
+
 node.override[:coupa][:role] = node[:chef][:client][:roles].split(",").first.strip
 
 template "/etc/chef_coupa_attr.json" do
