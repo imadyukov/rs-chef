@@ -256,7 +256,8 @@
       ],
       "recipes": [
         "rs-chef::client",
-        "rs-chef::server"
+        "rs-chef::server",
+        "rs-chef::security-updates"
       ],
       "calculated": false,
       "type": "string"
@@ -483,7 +484,8 @@
     "rs-chef::server_monitoring": "Set up RS monitoring",
     "rs-chef::server_postgresql": "Set up postgresql service",
     "rs-chef::run_recipe": "Run custom recipe",
-    "rs-chef::decomm": "Run decommission role"
+    "rs-chef::decomm": "Run decommission role",
+    "rs-chef::security-updates": "Apply security updates. Install patches packages."
   },
   "version": "15.0.0"
 }

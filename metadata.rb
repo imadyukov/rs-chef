@@ -42,6 +42,9 @@ recipe "rs-chef::run_recipe",
 recipe "rs-chef::decomm",
   "Run decommission role"
 
+recipe "rs-chef::security-updates",
+  "Apply security updates. Install patches packages."
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
@@ -186,7 +189,7 @@ attribute "coupa/serverdomain",
     "Specify the serverdomain coupadev.com/coupahost.com",
   :required => "required",
   :choice => ["coupadev.com", "coupahost.com"],
-  :recipes => ["rs-chef::client", "rs-chef::server"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::security-updates"]
 
 attribute "coupa/nodename",
   :display_name => "Node name for the server",
