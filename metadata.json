@@ -316,32 +316,6 @@
       "calculated": false,
       "type": "string"
     },
-    "coupa/dns/api_key": {
-      "display_name": "DNS API Key",
-      "description": "The API key to be used to access to DnsMadeEasy provider",
-      "required": "required",
-      "recipes": [
-        "rs-chef::server"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
-    "coupa/dns/secret_key": {
-      "display_name": "DNS API Secret Key",
-      "description": "The API Secret key to be used to access to DnsMadeEasy provider",
-      "required": "required",
-      "recipes": [
-        "rs-chef::server"
-      ],
-      "choice": [
-
-      ],
-      "calculated": false,
-      "type": "string"
-    },
     "coupa/s3/access_key": {
       "display_name": "AWS ACCESS KEY for S3",
       "description": "The aws access key to be used to work with S3 buckets",

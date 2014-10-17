@@ -8,7 +8,7 @@
   end.run_action(:install)
 end
 
-%w(dnsmadeeasy-api aws-sdk).each do |gem_p|
+%w(aws-sdk).each do |gem_p|
   gem_package gem_p do
     gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
     action :nothing

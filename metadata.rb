@@ -221,20 +221,6 @@ attribute "coupa/vol/size",
   :required => "optional",
   :recipes => ["rs-chef::client"]
 
-attribute "coupa/dns/api_key",
-  :display_name => "DNS API Key",
-  :description =>
-    "The API key to be used to access to DnsMadeEasy provider",
-  :required => true,
-  :recipes => ["rs-chef::server"]
-
-attribute "coupa/dns/secret_key",
-  :display_name => "DNS API Secret Key",
-  :description =>
-    "The API Secret key to be used to access to DnsMadeEasy provider",
-  :required => true,
-  :recipes => ["rs-chef::server"]
-
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",
   :description =>
