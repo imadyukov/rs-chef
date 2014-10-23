@@ -94,6 +94,16 @@ log "  Chef Client version #{node[:chef][:client][:version]} installation is" +
 # Creates the Chef Client configuration directory.
 directory node[:chef][:client][:config_dir]
 
+# Calculates node name
+chef_node_name = if node[:chef][:client][:node_name].include?(" #")
+  Chef::Log.info "Array instance detected."
+  node[:chef][:client][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}.join
+else
+  Chef::Log.info "Server instance detected."
+  node[:chef][:client][:node_name] + '-' + launchtime
+end
+Chef::Log.info "Chef node name: #{chef_node_name}"
+
 # Creates the Chef Client configuration file.
 template "#{node[:chef][:client][:config_dir]}/client.rb" do
   source "client.rb.erb"
@@ -103,7 +113,7 @@ template "#{node[:chef][:client][:config_dir]}/client.rb" do
   variables(
     :server_url => node[:chef][:client][:server_url],
     :validation_name => node[:chef][:client][:validation_name],
-    :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
+    :node_name => chef_node_name,
     :ca_file => node[:chef][:client][:ca_file],
     :log_level => node[:chef][:client][:log_level],
     :log_location => node[:chef][:client][:log_location]
@@ -135,7 +145,7 @@ template "#{node[:chef][:client][:config_dir]}/runlist.json" do
   mode "0440"
   backup false
   variables(
-    :node_name => node[:chef][:client][:node_name] + '-' + launchtime,
+    :node_name => chef_node_name,
     :environment => node[:chef][:client][:environment],
     :company => node[:chef][:client][:company],
     :roles => node[:chef][:client][:roles]
