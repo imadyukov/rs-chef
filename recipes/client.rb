@@ -9,7 +9,7 @@
 # Copy Chef Client installation script from cookbook files.
 # Sourced from https://www.opscode.com/chef/install.sh
 
-class Chef::Resource::Template
+class Chef::Recipe
   include Rschef::Helper
 end
 
