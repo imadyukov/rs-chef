@@ -95,13 +95,7 @@ log "  Chef Client version #{node[:chef][:client][:version]} installation is" +
 directory node[:chef][:client][:config_dir]
 
 # Calculates node name
-chef_node_name = if node[:chef][:client][:node_name].include?(" #")
-  Chef::Log.info "Array instance detected."
-  node[:chef][:client][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}.join
-else
-  Chef::Log.info "Server instance detected."
-  node[:chef][:client][:node_name] + '-' + launchtime
-end
+chef_node_name = node[:chef][:client][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}.join + '-' + launchtime
 Chef::Log.info "Chef node name: #{chef_node_name}"
 
 # Creates the Chef Client configuration file.
