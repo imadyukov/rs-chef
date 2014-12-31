@@ -221,6 +221,15 @@ attribute "coupa/vol/size",
   :required => "optional",
   :recipes => ["rs-chef::client"]
 
+attribute "coupa/vol/encrypted",
+  :display_name => "Encryption for Volume",
+  :description =>
+    "Use encryption for a volume or not",
+  :required => "optional",
+  :recipes => ["rs-chef::client"],
+  :choice => ["true", "false"],
+  :default => "true"
+
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",
   :description =>

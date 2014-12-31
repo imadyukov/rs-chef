@@ -316,6 +316,21 @@
       "calculated": false,
       "type": "string"
     },
+    "coupa/vol/encrypted": {
+      "display_name": "Encryption for Volume",
+      "description": "Use encryption for a volume or not",
+      "required": "optional",
+      "recipes": [
+        "rs-chef::client"
+      ],
+      "choice": [
+        "true",
+        "false"
+      ],
+      "default": "true",
+      "calculated": false,
+      "type": "string"
+    },
     "coupa/s3/access_key": {
       "display_name": "AWS ACCESS KEY for S3",
       "description": "The aws access key to be used to work with S3 buckets",
