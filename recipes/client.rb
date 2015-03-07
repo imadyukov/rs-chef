@@ -35,8 +35,6 @@ ruby_block "Check ca-certificates" do
 end
 
 
-node.override[:coupa][:role] = node[:chef][:client][:roles].split(",").first.strip
-
 template "/etc/chef_coupa_attr.json" do
   source "chef_coupa_attr.json.erb"
   owner "root"
