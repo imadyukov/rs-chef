@@ -1,0 +1,23 @@
+/var/log/chef-server/nginx/error.log
+/var/log/chef-server/nginx/rewrite-port-80.log
+/var/log/chef-server/nginx/access.log
+/var/log/chef-server/erchef/crash.log
+/var/log/chef-server/erchef/sasl-error.log
+/var/log/chef-server/erchef/erchef.log
+/var/log/chef-server/erchef/requests.log
+/var/log/chef-server/chef-solr/current
+/var/log/chef-server/chef-expander/current
+/var/log/chef-server/chef-server-webui/current
+{
+  rotate 168
+  daily
+  dateext
+  dateformat .%s
+  missingok
+  notifempty
+  copytruncate
+  compress
+  lastaction
+    /opt/coupa/bin/store_logs.rb \!/var/log/chef-server $@ || :
+  endscript
+}
