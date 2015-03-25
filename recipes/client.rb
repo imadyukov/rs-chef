@@ -88,6 +88,36 @@ file "/etc/chef/https_ca_file.crt" do
   not_if { node[:chef][:client][:ca_file].nil? }
 end
 
+# right_api_client 1.5 is not compatible with mime-types 2.0 which is required by ohai 8.1.1
+# if chef-client is 12.1 we can downgrade ohai to ~> 8.0.0 and mime-types to ~> 1.0
+ruby_block "Downgrade ohai to ~> 8.0" do
+  block do
+    r = IO.popen("/opt/chef/embedded/bin/gem install ohai -v '~> 8.0.0' --no-ri --no-rdoc 2>&1") {|x| x.read}
+    raise r unless $?.success?
+
+    installed_ohai_version = IO.popen("/opt/chef/embedded/bin/gem list ohai -q") {|x| x.read}.scan(/(\d+\.\d+\.\d+)/).flatten.select {|x| Gem::Version.new(x) < Gem::Version.new("8.1")}.sort {|a,b| Gem::Version.new(a) <=> Gem::Version.new(b)}.last
+    installed_mime_types_version = IO.popen("/opt/chef/embedded/bin/gem list mime-types -q") {|x| x.read}.scan(/(\d+\.\d+\.\d+)/).flatten.select {|x| Gem::Version.new(x) < Gem::Version.new("2")}.sort {|a,b| Gem::Version.new(a) <=> Gem::Version.new(b)}.last
+
+    ::File.open("/opt/chef/bin/chef-client") do |r|
+      t = r.read
+      ::File.open("/opt/chef/bin/chef-client", "w") do |w|
+        w << t.gsub(
+          /gem\ \"ohai\"\,\ \"\=\ (.*?)\"/, "gem \"ohai\", \"= #{installed_ohai_version}\""
+          ).gsub(
+          /gem\ \"mime\-types\"\,\ \"\=\ (.*?)\"/, "gem \"mime-types\", \"= #{installed_mime_types_version}\""
+          )
+      end
+    end
+  end
+  only_if {
+    current_version = IO.popen("/opt/chef/bin/chef-client --version") {|x| x.read}.match(/^Chef: (.*)$/)[1]
+    Gem::Version.new(current_version) >= Gem::Version.new("12") && \
+    Gem::Version.new(current_version) < Gem::Version.new("12.2") && \
+    ::File.open("/opt/chef/bin/chef-client").read.include?('gem "ohai", "= 8.1')
+  }
+end
+# -----
+
 log "  Chef Client version #{node[:chef][:client][:version]} installation is" +
   " completed."
 
