@@ -50,6 +50,34 @@ execute "Install chef server" do
   not_if { system("yum info chef-server") }
 end
 
+directory "/etc/coupa/patches" do
+  recursive true
+end
+
+remote_directory "/etc/coupa/patches" do
+  source "etc/coupa/patches"
+end
+
+file "/etc/coupa/patches/apply.sh" do
+  content lazy {
+    "#!/bin/bash\n" + \
+    ::Dir.glob("/etc/coupa/patches/*.patch").map do |patch|
+      file = File.open(patch).read.scan(/\+\+\+\ (.*?)\ /).flatten.first
+      "patch #{file} -i #{patch}"
+    end.join("\n") + "\n"
+  }
+  mode 0700
+end
+
+execute "Apply Coupa patches for chef server" do
+  command "/etc/coupa/patches/apply.sh"
+  returns [1, 0]
+end
+
+cookbook_file "/etc/logrotate.d/chef-server" do
+  source "etc/logrotate.d/chef-server"
+end
+
 #######################################################################
 #
 # External database for chef server
