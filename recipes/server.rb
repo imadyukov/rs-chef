@@ -137,8 +137,8 @@ chef_server_options = {
   },
   'bookshelf' => {
     'enable' => false,
-    'url' => "https://s3.amazonaws.com",
-    'external_url' => "https://s3.amazonaws.com",
+    'url' => "https://#{api.config.s3_endpoint}",
+    'external_url' => "https://#{api.config.s3_endpoint}",
     'access_key_id' => node[:coupa][:s3][:access_key],
     'secret_access_key' => node[:coupa][:s3][:secret_key],
   },
