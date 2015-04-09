@@ -119,7 +119,7 @@ directory "/etc/ssl/priv" do
 end
 
 file "/etc/ssl/certs/chef.#{node[:coupa][:serverdomain]}" do
-  content node[:chef][:server][:ssl_cert]
+  content "#{node[:chef][:server][:ssl_cert]}\n#{node[:chef][:server][:ssl_ca_cert]}"
   not_if { node[:chef][:server][:ssl_cert].nil? }
 end
 

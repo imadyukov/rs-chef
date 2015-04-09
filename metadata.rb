@@ -262,6 +262,12 @@ attribute "chef/server/db_endpoint",
   :required => true,
   :recipes => ["rs-chef::server"]
 
+attribute "chef/server/ssl_ca_cert",
+  :display_name => "SSL CA Cert",
+  :description => "The ssl CA certificate to be used on nginx endpoint.",
+  :required => false,
+  :recipes => ["rs-chef::server"]
+
 attribute "chef/server/ssl_cert",
   :display_name => "SSL Cert",
   :description => "The ssl certificate to be used on nginx endpoint.",
