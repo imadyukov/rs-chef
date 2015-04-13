@@ -155,7 +155,7 @@ chef_server_options = {
     'ssl_certificate' => node[:chef][:server][:ssl_cert].nil? ? nil : "/etc/ssl/certs/chef.#{node[:coupa][:serverdomain]}",
     'ssl_certificate_key' => node[:chef][:server][:ssl_cert_key].nil? ? nil : "/etc/ssl/priv/chef.#{node[:coupa][:serverdomain]}",
     'ssl_protocols' => "TLSv1 TLSv1.1 TLSv1.2",
-    'ssl_ciphers' => "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED:!SSLv2:!SSLv3",
+    'ssl_ciphers' => "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED:!SSLv2",
   }
 }
 
