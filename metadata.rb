@@ -221,6 +221,15 @@ attribute "coupa/vol/size",
   :required => "optional",
   :recipes => ["rs-chef::client"]
 
+attribute "coupa/vol/type",
+  :display_name => "Volume Type",
+  :description =>
+    "Volume type. Could be: (provisioned_ssd) io1 - Provisioned IOPS (SSD); (general_ssd) gp2 - General Purpose (SSD); (magnetic) standard - Magnetic",
+  :required => "optional",
+  :recipes => ["rs-chef::client"],
+  :choice => ["magnetic", "provisioned_ssd", "general_ssd"],
+  :default => "magnetic"
+
 attribute "coupa/vol/encrypted",
   :display_name => "Encryption for Volume",
   :description =>
