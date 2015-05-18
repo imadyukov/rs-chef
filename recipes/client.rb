@@ -89,31 +89,23 @@ file "/etc/chef/https_ca_file.crt" do
 end
 
 # right_api_client 1.5 is not compatible with mime-types 2.0 which is required by ohai 8.1.1
-# if chef-client is 12.1 we can downgrade ohai to ~> 8.0.0 and mime-types to ~> 1.0
-ruby_block "Downgrade ohai to ~> 8.0" do
+ruby_block "Install our own build of right_api_client gem" do
   block do
-    r = IO.popen("/opt/chef/embedded/bin/gem install ohai -v '~> 8.0.0' --no-ri --no-rdoc 2>&1") {|x| x.read}
-    raise r unless $?.success?
+    require 'open-uri'
 
-    installed_ohai_version = IO.popen("/opt/chef/embedded/bin/gem list ohai -q") {|x| x.read}.scan(/(\d+\.\d+\.\d+)/).flatten.select {|x| Gem::Version.new(x) < Gem::Version.new("8.1")}.sort {|a,b| Gem::Version.new(a) <=> Gem::Version.new(b)}.last
-    installed_mime_types_version = IO.popen("/opt/chef/embedded/bin/gem list mime-types -q") {|x| x.read}.scan(/(\d+\.\d+\.\d+)/).flatten.select {|x| Gem::Version.new(x) < Gem::Version.new("2")}.sort {|a,b| Gem::Version.new(a) <=> Gem::Version.new(b)}.last
-
-    ::File.open("/opt/chef/bin/chef-client") do |r|
-      t = r.read
-      ::File.open("/opt/chef/bin/chef-client", "w") do |w|
-        w << t.gsub(
-          /gem\ \"ohai\"\,\ \"\=\ (.*?)\"/, "gem \"ohai\", \"= #{installed_ohai_version}\""
-          ).gsub(
-          /gem\ \"mime\-types\"\,\ \"\=\ (.*?)\"/, "gem \"mime-types\", \"= #{installed_mime_types_version}\""
-          )
-      end
+    File.open("/tmp/right_api_client-1.5.26.gem", "w") do |f|
+      f << open("https://s3.amazonaws.com/packages.#{node[:coupa][:serverdomain]}/right_api_client-1.5.26.gem", ssl_ca_cert: '/etc/ssl/certs/ca-bundle.crt').read
     end
+
+    IO.popen("/opt/chef/embedded/bin/gem install /tmp/right_api_client-1.5.26.gem") {|x| x.read}
+    raise "Cannot install local right_api_client gem" unless $?.success?
   end
   only_if {
     current_version = IO.popen("/opt/chef/bin/chef-client --version") {|x| x.read}.match(/^Chef: (.*)$/)[1]
+    right_api_client_installed = IO.popen("/opt/chef/embedded/bin/gem list right_api_client") {|x| x.read}.match(/^right_api_client/) && true
+
     Gem::Version.new(current_version) >= Gem::Version.new("12") && \
-    Gem::Version.new(current_version) < Gem::Version.new("12.2") && \
-    ::File.open("/opt/chef/bin/chef-client").read.include?('gem "ohai", "= 8.1')
+    !right_api_client_installed
   }
 end
 # -----
