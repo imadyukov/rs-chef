@@ -51,8 +51,18 @@ directory "/etc/chef/ohai/hints" do
   action :create
 end
 
-file "/etc/chef/ohai/hints/ec2.json" do
-  action :create_if_missing
+#no need for this file in cloudstack
+begin
+  require 'rightscale_tools'
+rescue LoadError
+  Chef::Log.warn("Missing gem 'rightscale_tools'")
+end
+
+if @cloud == 'ec2'
+#if !node['ec2'].nil? && !node['ec2'].empty?
+  file "/etc/chef/ohai/hints/ec2.json" do
+    action :create_if_missing
+  end
 end
 
 cookbook_file "/tmp/install.sh" do
