@@ -253,7 +253,6 @@ attribute "coupa/s3/secret_key",
     "The aws access secret key to be used to work with S3 buckets",
   :required => true,
   :recipes => ["rs-chef::server"]
-=end
 
 attribute "chef/server/db_master_user",
   :display_name => "Chef Server DB Master User",
@@ -272,6 +271,7 @@ attribute "chef/server/db_endpoint",
   :description => "The endpoint of chef server database. Format: Host:Port.",
   :required => true,
   :recipes => ["rs-chef::server"]
+=end
 
 attribute "chef/server/ssl_ca_cert",
   :display_name => "SSL CA Cert",
