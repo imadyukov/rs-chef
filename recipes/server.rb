@@ -15,6 +15,7 @@ end
   end.run_action(:install)
 end
 
+=begin
 %w(aws-sdk).each do |gem_p|
   gem_package gem_p do
     gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
@@ -40,7 +41,7 @@ api = AWS::S3.new(
 unless api.buckets[bucket_name].exists?
   api.buckets.create(bucket_name)
 end
-
+=end
 #######################################################################
 
 #
@@ -90,10 +91,12 @@ file "/etc/coupa/patches/apply.sh" do
   mode 0700
 end
 
+=begin
 execute "Apply Coupa patches for chef server" do
   command "/etc/coupa/patches/apply.sh && touch /etc/coupa/patches/apply.sh.done"
   creates '/etc/coupa/patches/apply.sh.done'
 end
+=end
 
 cookbook_file "/etc/logrotate.d/chef-server" do
   source "etc/logrotate.d/chef-server"
@@ -104,7 +107,7 @@ end
 # External database for chef server
 #
 
-include_recipe "rs-chef::server_postgresql"
+#include_recipe "rs-chef::server_postgresql"
 
 #######################################################################
 
@@ -152,6 +155,7 @@ else
   'erchef'
 end
 
+=begin
 chef_server_options = {
   'postgresql' => {
     'enable' => false,
@@ -169,6 +173,8 @@ chef_server_options = {
   erchef_config_key => {
     's3_bucket' => bucket_name,
   },
+=end
+chef_server_options = {
   'nginx' => {
     'server_name' => "chef.#{node[:coupa][:serverdomain]}",
     'ssl_company_name' => "Coupa",

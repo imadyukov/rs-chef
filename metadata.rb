@@ -60,7 +60,7 @@ attribute "chef/server/version",
     "Specify the Chef Server version to match requirements of your Chef" +
     " Server. Example: 11.1.3-1",
   :required => false,
-  :default => "11.1.3-1",
+  :default => "12.3.1",
   :recipes => ["rs-chef::server"]
 
 attribute "chef/client/server_url",
@@ -239,6 +239,7 @@ attribute "coupa/vol/encrypted",
   :choice => ["true", "false"],
   :default => "true"
 
+=begin
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",
   :description =>
@@ -252,6 +253,7 @@ attribute "coupa/s3/secret_key",
     "The aws access secret key to be used to work with S3 buckets",
   :required => true,
   :recipes => ["rs-chef::server"]
+=end
 
 attribute "chef/server/db_master_user",
   :display_name => "Chef Server DB Master User",
