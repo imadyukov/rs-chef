@@ -184,6 +184,6 @@ execute "extract chef-validator pub key" do
 end
 
 execute "add validator key" do
-  command "chef-server-ctl add-client-key coupa coupa-validator --public-key-path /tmp/key.pub --key-name validation"
+  command "chef-server-ctl add-client-key coupa coupa-validator --public-key-path #{node[:chef][:server][:config_dir]}/chef-validator.pub --key-name validation"
   action :nothing
 end
