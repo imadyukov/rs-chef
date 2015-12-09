@@ -15,31 +15,6 @@ end
   end.run_action(:install)
 end
 
-%w(aws-sdk).each do |gem_p|
-  gem_package gem_p do
-    gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
-    action :nothing
-    options("-- --use-system-libraries")
-  end.run_action(:install)
-end
-Gem.clear_paths
-
-#######################################################################
-
-#
-# Check / Create the s3 bucket to be used for cookbook files of chef server.
-#
-require 'aws-sdk'
-
-bucket_name = "#{node[:coupa][:deployment].chars.select{|x| x.match(/[a-z0-9]/)}.join}chef.#{node[:coupa][:serverdomain]}"
-
-api = AWS::S3.new(
-  :access_key_id => node[:coupa][:s3][:access_key],
-  :secret_access_key => node[:coupa][:s3][:secret_key],
-  :region => node['ec2']['placement_availability_zone'].chop)
-unless api.buckets[bucket_name].exists?
-  api.buckets.create(bucket_name)
-end
 #######################################################################
 
 #
@@ -103,7 +78,7 @@ end
 # External database for chef server
 #
 
-include_recipe "rs-chef::server_postgresql"
+#include_recipe "rs-chef::server_postgresql"
 
 #######################################################################
 
@@ -152,22 +127,6 @@ else
 end
 
 chef_server_options = {
-  'postgresql' => {
-    'enable' => false,
-    'sql_password' => node['postgresql']['password']['opscode_chef'],
-    'sql_ro_password' => node['postgresql']['password']['opscode_chef_ro'],
-    'vip' => node[:chef][:server][:db_endpoint].split(":").first,
-  },
-  'bookshelf' => {
-    'enable' => false,
-    'url' => "https://#{api.config.s3_endpoint}",
-    'external_url' => "https://#{api.config.s3_endpoint}",
-    'access_key_id' => node[:coupa][:s3][:access_key],
-    'secret_access_key' => node[:coupa][:s3][:secret_key],
-  },
-  erchef_config_key => {
-    's3_bucket' => bucket_name,
-  },
   'nginx' => {
     'server_name' => "chef.#{node[:coupa][:serverdomain]}",
     'ssl_company_name' => "Coupa",
@@ -204,3 +163,27 @@ execute "chef-server-ctl reconfigure" do
 end
 
 #######################################################################
+
+execute "user-create" do
+  command "chef-server-ctl user-create coupa_admin Coupa Admin #{node[:chef][:server][:admin_email]} #{node[:chef][:server][:admin_passwd]} -f #{node[:chef][:server][:config_dir]}/coupa_admin.pem"
+  action :run
+  creates "#{node[:chef][:server][:config_dir]}/coupa_admin.pem"
+end
+
+execute "org-create" do
+  command "chef-server-ctl org-create coupa 'Coupa' --association_user coupa_admin --filename #{node[:chef][:server][:config_dir]}/coupa-validator.pem"
+  action :run
+  creates "#{node[:chef][:server][:config_dir]}/coupa-validator.pem"
+end
+
+execute "extract chef-validator pub key" do
+  command "openssl rsa -in #{node[:chef][:server][:config_dir]}/chef-validator.pem -pubout > #{node[:chef][:server][:config_dir]}/chef-validator.pub"
+  action :run
+  notifies :run, 'execute[add validator key]', :immediately
+  creates "#{node[:chef][:server][:config_dir]}/chef-validator.pub"
+end
+
+execute "add validator key" do
+  command "chef-server-ctl add-client-key coupa coupa-validator --public-key-path /tmp/key.pub --key-name validation"
+  action :nothing
+end

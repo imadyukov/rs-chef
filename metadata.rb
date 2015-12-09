@@ -30,6 +30,9 @@ recipe "rs-chef::client",
 recipe "rs-chef::server",
   "Installs and configures chef server"
 
+recipe "rs-chef::server12",
+  "Installs and configures chef server version 12"
+
 recipe "rs-chef::server_monitoring",
   "Set up RS monitoring"
 
@@ -51,7 +54,7 @@ attribute "chef/client/version",
     "Specify the Chef Client version to match requirements of your Chef" +
     " Server. Example: 11.12.8-2",
   :required => "optional",
-  :default => "11.12.8-2",
+  :default => "12.5.1-1",
   :recipes => ["rs-chef::client"]
 
 attribute "chef/server/version",
@@ -61,7 +64,7 @@ attribute "chef/server/version",
     " Server. Example: 11.1.3-1",
   :required => false,
   :default => "12.3.1",
-  :recipes => ["rs-chef::server"]
+  :recipes => ["rs-chef::server", "rs-chef::server12"]
 
 attribute "chef/client/server_url",
   :display_name => "Chef Server URL",
@@ -80,7 +83,7 @@ attribute "chef/client/validator_pem",
     "Private SSH key which will be used to authenticate the Chef Client on" +
     " the remote Chef Server.",
   :required => "required",
-  :recipes => ["rs-chef::client", "rs-chef::server"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::server12"]
 
 attribute "chef/client/ca_file",
   :display_name => "HTTPS CA File",
@@ -181,7 +184,7 @@ attribute "coupa/deployment",
   :description =>
     "Specify the deployment name",
   :required => "required",
-  :recipes => ["rs-chef::client", "rs-chef::server"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::server12"]
 
 attribute "coupa/serverdomain",
   :display_name => "Coupa serverdomain",
@@ -189,7 +192,7 @@ attribute "coupa/serverdomain",
     "Specify the serverdomain coupadev.com/coupahost.com",
   :required => "required",
   :choice => ["coupadev.com", "coupahost.com"],
-  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::security-updates"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::security-updates", "rs-chef::server12"]
 
 attribute "coupa/nodename",
   :display_name => "Node name for the server",
@@ -197,7 +200,7 @@ attribute "coupa/nodename",
     "Specify the nickname",
   :required => "optional",
   :default => "",
-  :recipes => ["rs-chef::client", "rs-chef::server"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::server12"]
 
 # Enable EBS is needed
 attribute "coupa/vol/stripe_count",
@@ -239,7 +242,6 @@ attribute "coupa/vol/encrypted",
   :choice => ["true", "false"],
   :default => "true"
 
-=begin
 attribute "coupa/s3/access_key",
   :display_name => "AWS ACCESS KEY for S3",
   :description =>
@@ -271,7 +273,6 @@ attribute "chef/server/db_endpoint",
   :description => "The endpoint of chef server database. Format: Host:Port.",
   :required => true,
   :recipes => ["rs-chef::server"]
-=end
 
 attribute "chef/server/ssl_ca_cert",
   :display_name => "SSL CA Cert",
@@ -310,3 +311,19 @@ attribute "coupa/run_recipe_json",
   :description => "The json string needs to be passed to chef-client on run custom recipe.",
   :required => false,
   :recipes => ["rs-chef::run_recipe"]
+
+attribute "chef/server/admin_passwd",
+  :display_name => "Chef Server Admin User Password",
+  :description =>
+    "Password for coupa_admin user. Coupa-admin is generated as part of server setup process. " +
+    "Coupa_admin private key will be placed to node[:chef][:server][:config_dir]/coupa_admin.pem",
+  :required => true,
+  :recipes => ["rs-chef::server12"]
+
+attribute "chef/server/admin_email",
+  :display_name => "Chef Server Admin User Email",
+  :description =>
+    "Email for coupa_admin user",
+  :required => true,
+  :recipes => ["rs-chef::server12"]
+
