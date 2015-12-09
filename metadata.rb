@@ -278,19 +278,19 @@ attribute "chef/server/ssl_ca_cert",
   :display_name => "SSL CA Cert",
   :description => "The ssl CA certificate to be used on nginx endpoint.",
   :required => false,
-  :recipes => ["rs-chef::server"]
+  :recipes => ["rs-chef::server", "rs-chef::server12"]
 
 attribute "chef/server/ssl_cert",
   :display_name => "SSL Cert",
   :description => "The ssl certificate to be used on nginx endpoint.",
   :required => false,
-  :recipes => ["rs-chef::server"]
+  :recipes => ["rs-chef::server", "rs-chef::server12"]
 
 attribute "chef/server/ssl_cert_key",
   :display_name => "SSL Cert Key",
   :description => "The ssl certificate key to be used on nginx endpoint.",
   :required => false,
-  :recipes => ["rs-chef::server"]
+  :recipes => ["rs-chef::server", "rs-chef::server12"]
 
 attribute "coupa/rs_sketchy",
   :display_name => "RS Sketchy",
@@ -298,7 +298,7 @@ attribute "coupa/rs_sketchy",
   "Since the RS_SKETCHY variable in /var/spool/cloud/user-data.rb is deprecated, " +
   "we should use RS input to set it up. Required for monitoring.",
   :required => true,
-  :recipes => ["rs-chef::server", "rs-chef::client"]
+  :recipes => ["rs-chef::server", "rs-chef::client", "rs-chef::server12"]
 
 attribute "coupa/run_recipe",
   :display_name => "Recipe Name",
