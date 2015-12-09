@@ -15,6 +15,24 @@ end
   end.run_action(:install)
 end
 
+unless node['coupa']['dns']['api_key'].nil?
+  %w(dnsmadeeasy-api).each do |gem_p|
+    gem_package gem_p do
+      gem_binary ::File.join(::File.dirname(Gem.ruby), "gem")
+      action :nothing
+      options("-- --use-system-libraries")
+    end.run_action(:install)
+  end
+  Gem.clear_paths
+
+  chef_node_name = node[:chef][:server][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}
+  coupa_dns "#{chef_node_name}.int" do
+    action :update
+    dns_domain node['coupa']['serverdomain']
+    dns_ip node['chef']['server']['ipaddress']
+  end
+end
+
 #######################################################################
 
 #

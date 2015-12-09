@@ -110,6 +110,20 @@ attribute "chef/client/node_name",
   :required => "optional",
   :recipes => ["rs-chef::client"]
 
+attribute "chef/server/node_name",
+  :display_name => "Chef Server Node Name",
+  :description =>
+    "Name which will be used to setup server DNS record <node_name>.int.<coupa-domain>.com",
+  :required => "optional",
+  :recipes => ["rs-chef::server12"]
+
+attribute "chef/server/ipaddress",
+  :display_name => "Chef Server IP",
+  :description =>
+    "Ip address which will be used to setup server DNS record <node_name>.int.<coupa-domain>.com",
+  :required => "optional",
+  :recipes => ["rs-chef::server12"]
+
 attribute "chef/client/environment",
   :display_name => "Chef Client Environment",
   :description =>
@@ -325,5 +339,19 @@ attribute "chef/server/admin_email",
   :description =>
     "Email for coupa_admin user",
   :required => true,
+  :recipes => ["rs-chef::server12"]
+
+attribute "coupa/dns/api_key",
+  :display_name => "DnsMadeEasy API key",
+  :description =>
+    "API key to manage DnsMadeEasy. Optional. If not set no dns record is created/updated",
+  :required => false,
+  :recipes => ["rs-chef::server12"]
+
+attribute "coupa/dns/api_secret",
+  :display_name => "DnsMadeEasy API secret key",
+  :description =>
+    "API secret key to manage DnsMadeEasy. Optional. If not set no dns record is created/updated",
+  :required => false,
   :recipes => ["rs-chef::server12"]
 
