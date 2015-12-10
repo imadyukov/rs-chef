@@ -26,7 +26,7 @@ unless node['coupa']['dns']['api_key'].nil?
   Gem.clear_paths
 
   chef_node_name = node[:chef][:server][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}.join
-  coupa_dns "#{chef_node_name}.int" do
+  coupa_dns "#{chef_node_name}" do
     action :update
     dns_domain node['coupa']['serverdomain']
     dns_ip node['chef']['server']['ipaddress']
