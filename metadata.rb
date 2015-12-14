@@ -48,6 +48,9 @@ recipe "rs-chef::decomm",
 recipe "rs-chef::security-updates",
   "Apply security updates. Install patches packages."
 
+recipe "rs-chef::server-replication",
+  "Configures replication of chef server objects to standby servers"
+
 attribute "chef/client/version",
   :display_name => "Chef Client Version",
   :description =>
@@ -122,7 +125,7 @@ attribute "chef/server/ipaddress",
   :description =>
     "Ip address which will be used to setup server DNS record <node_name>.int.<coupa-domain>.com",
   :required => "optional",
-  :recipes => ["rs-chef::server12"]
+  :recipes => ["rs-chef::server12", "rs-chef::server-replication"]
 
 attribute "chef/client/environment",
   :display_name => "Chef Client Environment",
@@ -206,7 +209,7 @@ attribute "coupa/serverdomain",
     "Specify the serverdomain coupadev.com/coupahost.com",
   :required => "required",
   :choice => ["coupadev.com", "coupahost.com"],
-  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::security-updates", "rs-chef::server12"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::security-updates", "rs-chef::server12", "rs-chef::server-replication"]
 
 attribute "coupa/nodename",
   :display_name => "Node name for the server",
@@ -214,7 +217,7 @@ attribute "coupa/nodename",
     "Specify the nickname",
   :required => "optional",
   :default => "",
-  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::server12"]
+  :recipes => ["rs-chef::client", "rs-chef::server", "rs-chef::server12", "rs-chef::server-replication"]
 
 # Enable EBS is needed
 attribute "coupa/vol/stripe_count",
@@ -354,4 +357,34 @@ attribute "coupa/dns/api_secret",
     "API secret key to manage DnsMadeEasy. Optional. If not set no dns record is created/updated",
   :required => false,
   :recipes => ["rs-chef::server12"]
+
+attribute "chef/server/is_master",
+  :display_name => "Replication master?",
+  :description =>
+    "Whether this server is replication master",
+  :required => true,
+  :choice => [true, false],
+  :recipes => ["rs-chef::server-replication"]
+
+attribute "chef/server/replication_key",
+  :display_name => "Replication key",
+  :description =>
+    "PEM key to be installed on chef server and used for replication",
+  :required => true,
+  :recipes => ["rs-chef::server-replication", "rs-chef::server12"]
+
+attribute "chef/server/replicate_to",
+  :display_name => "Replication targets hash",
+  :description =>
+    "A hash consisting of replication target server urls and items to replicate." +
+    "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\" => {\"environment\", \"role\", \"data_bag\", \"cookbook\"}}",
+  :required => true,
+  :recipes => ["rs-chef::server-replication"]
+
+attribute "coupa/git_writeable_key",
+  :display_name => "Git key",
+  :description =>
+    "Git key to access chef-core repo.",
+  :required => true,
+  :recipes => ["rs-chef::server-replication"]
 

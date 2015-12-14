@@ -194,6 +194,7 @@ execute "org-create" do
   creates "#{node[:chef][:server][:config_dir]}/coupa-validator.pem"
 end
 
+#chef-validator.pem is the key we got from RS inputs, not the one just generated
 execute "extract chef-validator pub key" do
   command "openssl rsa -in #{node[:chef][:server][:config_dir]}/chef-validator.pem -pubout > #{node[:chef][:server][:config_dir]}/chef-validator.pub"
   action :run
@@ -205,3 +206,21 @@ execute "add validator key" do
   command "chef-server-ctl add-client-key coupa coupa-validator --public-key-path #{node[:chef][:server][:config_dir]}/chef-validator.pub --key-name validation"
   action :nothing
 end
+
+file "#{node[:chef][:server][:config_dir]}/chef-replication.pem" do
+  mode 0600
+  content node['chef']['server']['replication_key']
+end
+
+execute "extract chef-replication pub key" do
+  command "openssl rsa -in #{node[:chef][:server][:config_dir]}/chef-replication.pem -pubout > #{node[:chef][:server][:config_dir]}/chef-replication.pub"
+  action :run
+  notifies :run, 'execute[add replication key]', :immediately
+  creates "#{node[:chef][:server][:config_dir]}/chef-replication.pub"
+end
+
+execute "add replication key" do
+  command "chef-server-ctl add-user-key coupa_admin --public-key-path #{node[:chef][:server][:config_dir]}/chef-replication.pub --key-name replication"
+  action :nothing
+end
+
