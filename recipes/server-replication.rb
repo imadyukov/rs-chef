@@ -4,7 +4,7 @@ require 'zlib'
 require 'json'
 
 if node['chef']['server']['is_master'] == "true"
- is_backup_machine
+ is_backup_machine = true
 end
 
 package "postgresql-devel" do
