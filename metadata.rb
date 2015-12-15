@@ -401,7 +401,7 @@ attribute "chef/server/replicate_to",
   :description =>
     "A hash consisting of replication target server urls with the corresponding array of items to replicate." +
     "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\"=> [\"environment\", \"role\", \"data_bag\", \"cookbook\"]}",
-  :required => true,
+  :required => false,
   :recipes => ["rs-chef::server-replication"]
 
 attribute "coupa/git_writeable_key",

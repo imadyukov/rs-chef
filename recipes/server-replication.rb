@@ -43,7 +43,7 @@ end
 file "/etc/coupa/chef_server/chef_replication.pem" do
   content node['chef']['server']['replication_key']
   mode 0600
-  action (is_backup_machine ? :create : :delete)
+  #action (is_backup_machine ? :create : :delete)
 end
 
 execute "extract chef-replication pub key" do
