@@ -128,8 +128,6 @@ end
 
 link "/opt/coupa/lib" do
   to "/opt/coupa/var/coupa-base/libraries"
-  recursive true
-  mode 0755
 end
 
 file "/opt/coupa/lib/init.rb" do
