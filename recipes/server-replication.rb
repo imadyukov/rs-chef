@@ -70,7 +70,7 @@ execute "add replication key" do
   action :nothing
 end
 
-replicate_to = node['chef']['server']['replicate_to'].nil? {} : eval(node['chef']['server']['replicate_to'])
+replicate_to = node['chef']['server']['replicate_to'].nil? ? {} : eval(node['chef']['server']['replicate_to'])
 
 unless replicate_to.empty?
   replicate_to.each do |chef_url, chef_items|
