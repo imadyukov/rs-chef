@@ -58,7 +58,7 @@ attribute "chef/client/version",
     " Server. Example: 11.12.8-2",
   :required => "optional",
   :default => "12.5.1-1",
-  :recipes => ["rs-chef::client"]
+  :recipes => ["rs-chef::client", "rs-chef::server-replication"]
 
 attribute "chef/server/version",
   :display_name => "Chef Server Version",
