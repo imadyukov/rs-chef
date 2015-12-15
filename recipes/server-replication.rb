@@ -34,6 +34,11 @@ file "/etc/coupa/chef_server/chef_replication.pem" do
   action (is_backup_machine ? :create : :delete)
 end
 
+directory "/opt/coupa/lib/" do
+  recursive true
+  mode 0755
+end
+
 file "/opt/coupa/lib/init.rb" do
   mode 0755
   action (is_backup_machine ? :create : :delete)
