@@ -118,12 +118,7 @@ directory "/opt/coupa/var/chef-backup/cache" do
   mode 0700
 end
 
-directory "/opt/coupa/lib/" do
-  recursive true
-  mode 0755
-end
-
-git "/opt/coupa/lib/coupa-base" do
+git "/opt/coupa/var/coupa-base" do
   repository "git@github.com:coupa-ops/coupa-base.git"
   ssh_wrapper "/etc/coupa/chef_server/git_key.wrapper"
   only_if {
@@ -131,8 +126,14 @@ git "/opt/coupa/lib/coupa-base" do
   }
 end
 
+link "/opt/coupa/lib" do
+  to "/opt/coupa/var/coupa-base/libraries"
+  recursive true
+  mode 0755
+end
+
 file "/opt/coupa/lib/init.rb" do
-  content lazy { IO.read('/opt/coupa/lib/coupa-base/libraries/helper.rb') }
+  content lazy { IO.read('/opt/coupa/var/coupa-base/libraries/helper.rb') }
   mode 0755
   action (is_backup_machine ? :create : :delete)
 end
