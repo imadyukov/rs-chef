@@ -3,7 +3,9 @@ require 'base64'
 require 'zlib'
 require 'json'
 
-is_backup_machine = node['chef']['server']['is_master']
+if node['chef']['server']['is_master'] == "true"
+ is_backup_machine
+end
 
 package "postgresql-devel" do
   only_if { is_backup_machine }

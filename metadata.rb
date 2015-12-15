@@ -363,7 +363,7 @@ attribute "chef/server/is_master",
   :description =>
     "Whether this server is replication master",
   :required => true,
-  :choice => [true, false],
+  :choice => ["true", "false"],
   :recipes => ["rs-chef::server-replication"]
 
 attribute "chef/server/replication_key",
