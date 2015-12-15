@@ -88,8 +88,20 @@ file "/etc/coupa/chef_server/git_writeable_key" do
   action (is_backup_machine ? :create : :delete)
 end
 
+file "/etc/coupa/chef_server/git_key" do
+  content node['coupa']['git_key']
+  mode 0600
+  action (is_backup_machine ? :create : :delete)
+end
+
 file "/etc/coupa/chef_server/git_writeable_key.wrapper" do
   content "ssh -o StrictHostKeychecking=no -i /etc/coupa/chef_server/git_writeable_key $@"
+  mode 0700
+  action (is_backup_machine ? :create : :delete)
+end
+
+file "/etc/coupa/chef_server/git_key.wrapper" do
+  content "ssh -o StrictHostKeychecking=no -i /etc/coupa/chef_server/git_key $@"
   mode 0700
   action (is_backup_machine ? :create : :delete)
 end
@@ -113,14 +125,14 @@ end
 
 git "/opt/coupa/lib/coupa-base" do
   repository "git@github.com:coupa-ops/coupa-base.git"
-  ssh_wrapper "/etc/coupa/chef_server/git_writeable_key.wrapper"
+  ssh_wrapper "/etc/coupa/chef_server/git_key.wrapper"
   only_if {
     is_backup_machine
   }
 end
 
 file "/opt/coupa/lib/init.rb" do
-  content IO.read('/opt/coupa/lib/coupa-base/libraries/helper.rb')
+  content lazy { IO.read('/opt/coupa/lib/coupa-base/libraries/helper.rb') }
   mode 0755
   action (is_backup_machine ? :create : :delete)
 end

@@ -396,9 +396,16 @@ attribute "chef/server/replicate_to",
   :recipes => ["rs-chef::server-replication"]
 
 attribute "coupa/git_writeable_key",
-  :display_name => "Git key",
+  :display_name => "Git key chef-core",
   :description =>
     "Git key to access chef-core repo.",
+  :required => true,
+  :recipes => ["rs-chef::server-replication"]
+
+attribute "coupa/git_key",
+  :display_name => "Git key coupa-base",
+  :description =>
+    "Git key to access coupa-base repo.",
   :required => true,
   :recipes => ["rs-chef::server-replication"]
 
