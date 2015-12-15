@@ -34,6 +34,30 @@ file "/etc/coupa/chef_server/chef_replication.pem" do
   action (is_backup_machine ? :create : :delete)
 end
 
+execute "extract chef-replication pub key" do
+  command "openssl rsa -in /etc/coupa/chef_server/chef_replication.pem -pubout > /etc/coupa/chef_server/chef_replication.pub"
+  action :run
+  notifies :run, 'execute[add replication user]', :immediately
+  creates "/etc/coupa/chef_server/chef_replication.pub"
+end
+
+execute "add replication user" do
+  command "chef-server-ctl user-create chef_replication Coupa Replication #{node[:chef][:server][:admin_email]} #{node[:chef][:server][:admin_passwd]} -f /tmp/chef_replication.key"
+  action :nothing
+  notifies :run, 'execute[add replication user to org]', :immediately
+  notifies :run, 'execute[add replication key]', :immediately
+end
+
+execute "add replication user to org" do
+  command "chef-server-ctl org-user-add coupa chef_replication --admin"
+  action :nothing
+end
+
+execute "add replication key" do
+  command "chef-server-ctl add-user-key chef_replication --public-key-path /etc/coupa/chef_server/chef_replication.pub --key-name replication"
+  action :nothing
+end
+
 replicate_to = node['chef']['server']['replicate_to'] || {}
 
 replicate_to.each do |chef_url, chef_items|
