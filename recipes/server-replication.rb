@@ -42,7 +42,7 @@ execute "extract chef-replication pub key" do
 end
 
 execute "add replication user" do
-  command "chef-server-ctl user-create chef_replication Coupa Replication #{node[:chef][:server][:admin_email]} #{node[:chef][:server][:admin_passwd]} -f /tmp/chef_replication.key"
+  command "chef-server-ctl user-create chef_replication Coupa Replication #{node[:chef][:server][:replication_email]} #{node[:chef][:server][:replication_passwd]} -f /tmp/chef_replication.key"
   action :nothing
   notifies :run, 'execute[add replication user to org]', :immediately
   notifies :run, 'execute[add replication key]', :immediately

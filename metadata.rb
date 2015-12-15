@@ -335,14 +335,28 @@ attribute "chef/server/admin_passwd",
     "Password for coupa_admin user. Coupa-admin is generated as part of server setup process. " +
     "Coupa_admin private key will be placed to node[:chef][:server][:config_dir]/coupa_admin.pem",
   :required => true,
-  :recipes => ["rs-chef::server12", "rs-chef::server-replication"]
+  :recipes => ["rs-chef::server12"]
 
 attribute "chef/server/admin_email",
   :display_name => "Chef Server Admin User Email",
   :description =>
     "Email for coupa_admin user",
   :required => true,
-  :recipes => ["rs-chef::server12", "rs-chef::server-replication"]
+  :recipes => ["rs-chef::server12"]
+
+attribute "chef/server/replication_passwd",
+  :display_name => "Chef Server Replication User Password",
+  :description =>
+    "Password for chef_replication user. This password is required to create user ",
+  :required => true,
+  :recipes => ["rs-chef::server-replication"]
+
+attribute "chef/server/replication_email",
+  :display_name => "Chef Server Replication User Email",
+  :description =>
+    "Email for chef_replication user. This email is required when creating user",
+  :required => true,
+  :recipes => ["rs-chef::server-replication"]
 
 attribute "coupa/dns/api_key",
   :display_name => "DnsMadeEasy API key",
@@ -377,7 +391,7 @@ attribute "chef/server/replicate_to",
   :display_name => "Replication targets hash",
   :description =>
     "A hash consisting of replication target server urls with the corresponding array of items to replicate." +
-    "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\": [\"environment\", \"role\", \"data_bag\", \"cookbook\"]}",
+    "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\"=> [\"environment\", \"role\", \"data_bag\", \"cookbook\"]}",
   :required => true,
   :recipes => ["rs-chef::server-replication"]
 
