@@ -70,15 +70,17 @@ execute "add replication key" do
   action :nothing
 end
 
-replicate_to = eval(node['chef']['server']['replicate_to']) || {}
+replicate_to = node['chef']['server']['replicate_to'].nil? {} : eval(node['chef']['server']['replicate_to'])
 
-replicate_to.each do |chef_url, chef_items|
-  template "/etc/coupa/chef_server/knife-replicate-to-#{Zlib.crc32(chef_url)}.rb" do
-    source "knife-replicate-to.rb"
-    variables({
-      :chef_server_url => chef_url
-      })
-    action (is_backup_machine ? :create : :delete)
+unless replicate_to.empty?
+  replicate_to.each do |chef_url, chef_items|
+    template "/etc/coupa/chef_server/knife-replicate-to-#{Zlib.crc32(chef_url)}.rb" do
+      source "knife-replicate-to.rb"
+      variables({
+        :chef_server_url => chef_url
+        })
+      action (is_backup_machine ? :create : :delete)
+    end
   end
 end
 
@@ -156,28 +158,30 @@ git "/opt/coupa/var/chef-backup/scripts" do
   }
 end
 
-file "/opt/coupa/var/chef-backup/scripts/scripts/backup/backup.yaml" do
-  content({
-    "git_user_name" => chef_node_name,
-    "git_user_email" => "ops12@coupa.com",
-    "git_repo" => git_repo,
-    "cache_dir" => "/opt/coupa/var/chef-backup/cache",
-    "envs" => {
-      "main" => {
-        "git_branch" => "master",
-        "knife_config_file" => "/etc/coupa/chef_server/knife.rb",
-        "chef_objects" => ["environment", "role", "data_bag", "cookbook"],
-        "commit" => ["environment", "role", "data_bag"],
-        "replicate" => replicate_to.map do |chef_url, chef_items|
-          {
-            "knife_config" => "/etc/coupa/chef_server/knife-replicate-to-#{Zlib.crc32(chef_url)}.rb",
-            "chef_objects" => chef_items,
-          }
-        end
+unless replicate_to.empty?
+  file "/opt/coupa/var/chef-backup/scripts/scripts/backup/backup.yaml" do
+    content({
+      "git_user_name" => chef_node_name,
+      "git_user_email" => "ops12@coupa.com",
+      "git_repo" => git_repo,
+      "cache_dir" => "/opt/coupa/var/chef-backup/cache",
+      "envs" => {
+        "main" => {
+          "git_branch" => "master",
+          "knife_config_file" => "/etc/coupa/chef_server/knife.rb",
+          "chef_objects" => ["environment", "role", "data_bag", "cookbook"],
+          "commit" => ["environment", "role", "data_bag"],
+          "replicate" => replicate_to.map do |chef_url, chef_items|
+            {
+              "knife_config" => "/etc/coupa/chef_server/knife-replicate-to-#{Zlib.crc32(chef_url)}.rb",
+              "chef_objects" => chef_items,
+            }
+          end
+        }
       }
-    }
-  }.to_yaml)
-  action (is_backup_machine ? :create : :delete)
+    }.to_yaml)
+    action (is_backup_machine ? :create : :delete)
+  end
 end
 
 cron "Backup chef stuff" do
