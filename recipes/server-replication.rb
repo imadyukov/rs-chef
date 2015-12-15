@@ -58,7 +58,7 @@ execute "add replication key" do
   action :nothing
 end
 
-replicate_to = node['chef']['server']['replicate_to'] || {}
+replicate_to = JSON.parse(node['chef']['server']['replicate_to']) || {}
 
 replicate_to.each do |chef_url, chef_items|
   template "/etc/coupa/chef_server/knife-replicate-to-#{Zlib.crc32(chef_url)}.rb" do

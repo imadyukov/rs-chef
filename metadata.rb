@@ -377,7 +377,7 @@ attribute "chef/server/replicate_to",
   :display_name => "Replication targets hash",
   :description =>
     "A hash consisting of replication target server urls and items to replicate." +
-    "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\" => {\"environment\", \"role\", \"data_bag\", \"cookbook\"}}",
+    "E.g. {\"https://devchf315srv1.coupadev.com/organizations/coupa\": {\"environment\", \"role\", \"data_bag\", \"cookbook\"}}",
   :required => true,
   :recipes => ["rs-chef::server-replication"]
 
