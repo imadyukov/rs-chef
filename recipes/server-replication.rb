@@ -34,16 +34,6 @@ file "/etc/coupa/chef_server/chef_replication.pem" do
   action (is_backup_machine ? :create : :delete)
 end
 
-directory "/opt/coupa/lib/" do
-  recursive true
-  mode 0755
-end
-
-file "/opt/coupa/lib/init.rb" do
-  mode 0755
-  action (is_backup_machine ? :create : :delete)
-end
-
 execute "extract chef-replication pub key" do
   command "openssl rsa -in /etc/coupa/chef_server/chef_replication.pem -pubout > /etc/coupa/chef_server/chef_replication.pub"
   action :run
@@ -114,6 +104,25 @@ git_repo = "file:///opt/coupa/var/chef-backup/fake-repo"
 directory "/opt/coupa/var/chef-backup/cache" do
   recursive true
   mode 0700
+end
+
+directory "/opt/coupa/lib/" do
+  recursive true
+  mode 0755
+end
+
+git "/opt/coupa/lib/coupa-base" do
+  repository "git@github.com:coupa-ops/coupa-base.git"
+  ssh_wrapper "/etc/coupa/chef_server/git_writeable_key.wrapper"
+  only_if {
+    is_backup_machine
+  }
+end
+
+file "/opt/coupa/lib/init.rb" do
+  content IO.read('/opt/coupa/lib/coupa-base/libraries/helper.rb')
+  mode 0755
+  action (is_backup_machine ? :create : :delete)
 end
 
 git "/opt/coupa/var/chef-backup/scripts" do
