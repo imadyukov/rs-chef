@@ -58,8 +58,17 @@ attribute "chef/client/version",
     " Server. Example: 11.12.8-2",
   :required => "optional",
   :default => "12.5.1-1",
-  :recipes => ["rs-chef::client", "rs-chef::server-replication"]
-
+  :recipes => ["rs-chef::client"]
+=begin
+attribute "chef/client/gem_version",
+  :display_name => "Chef Gem Version",
+  :description =>
+    "Specify the Chef Gem version to match requirements of your Chef" +
+    " Server. Example: 11.18.12",
+  :required => "optional",
+  :default => "11.18.12",
+  :recipes => ["rs-chef::server-replication"]
+=end
 attribute "chef/server/version",
   :display_name => "Chef Server Version",
   :description =>

@@ -3,32 +3,16 @@ require 'base64'
 require 'zlib'
 require 'json'
 
-#code for installing chef client is taken from client.rb
-cookbook_file "/tmp/install.sh" do
-  source "install.sh"
-  mode "0755"
-  cookbook "rs-chef"
+gem_package "ohai" do
+  gem_binary("/opt/ruby/bin/gem")
+  version("7.4.1")
+  action :install
 end
 
-# Installs the Chef Client using user selected version.
-execute "install chef client" do
-  command "/tmp/install.sh -v #{node[:chef][:client][:version]}"
-  only_if {
-    begin
-      current_version = begin
-        r = IO.popen("chef-client --version")
-        r.read.chomp
-      rescue
-        "Chef: 0.0.0"
-      ensure
-        r.close unless r.closed?
-      end.match(/^Chef: (.*)$/)[1]
-
-      needed_version = node[:chef][:client][:version].match(/^([0-9.]+)/)[1]
-
-      Gem::Version.new(current_version) < Gem::Version.new(needed_version)
-    end
-  }
+gem_package "chef" do
+  gem_binary("/opt/ruby/bin/gem")
+  version("11.18.12")#node[:chef][:client][:gem_version])
+  action :install
 end
 
 if node['chef']['server']['is_master'] == "true"
