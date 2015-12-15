@@ -34,6 +34,11 @@ file "/etc/coupa/chef_server/chef_replication.pem" do
   action (is_backup_machine ? :create : :delete)
 end
 
+file "/opt/coupa/lib/init.rb" do
+  mode 0755
+  action (is_backup_machine ? :create : :delete)
+end
+
 execute "extract chef-replication pub key" do
   command "openssl rsa -in /etc/coupa/chef_server/chef_replication.pem -pubout > /etc/coupa/chef_server/chef_replication.pub"
   action :run
