@@ -335,14 +335,14 @@ attribute "chef/server/admin_passwd",
     "Password for coupa_admin user. Coupa-admin is generated as part of server setup process. " +
     "Coupa_admin private key will be placed to node[:chef][:server][:config_dir]/coupa_admin.pem",
   :required => true,
-  :recipes => ["rs-chef::server12"]
+  :recipes => ["rs-chef::server12", "rs-chef::server-replication"]
 
 attribute "chef/server/admin_email",
   :display_name => "Chef Server Admin User Email",
   :description =>
     "Email for coupa_admin user",
   :required => true,
-  :recipes => ["rs-chef::server12"]
+  :recipes => ["rs-chef::server12", "rs-chef::server-replication"]
 
 attribute "coupa/dns/api_key",
   :display_name => "DnsMadeEasy API key",
