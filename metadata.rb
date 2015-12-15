@@ -371,7 +371,7 @@ attribute "chef/server/replication_key",
   :description =>
     "PEM key to be installed on chef server and used for replication",
   :required => true,
-  :recipes => ["rs-chef::server-replication", "rs-chef::server12"]
+  :recipes => ["rs-chef::server-replication"]
 
 attribute "chef/server/replicate_to",
   :display_name => "Replication targets hash",
