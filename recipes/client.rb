@@ -117,7 +117,9 @@ log "  Chef Client version #{node[:chef][:client][:version]} installation is" +
 directory node[:chef][:client][:config_dir]
 
 # Calculates node name
-chef_node_name = node[:chef][:client][:node_name].chars.select {|x| x.match(/[a-z0-9A-Z_-]/)}.join + '-' + launchtime
+chef_node_name = launchnodename(
+  node[:chef][:client][:node_name].chars.select { |x| x.match(/[a-z0-9A-Z_-]/) }.join
+) + '-' + launchtime
 Chef::Log.info "Chef node name: #{chef_node_name}"
 
 # Creates the Chef Client configuration file.
