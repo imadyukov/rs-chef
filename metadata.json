@@ -495,6 +495,32 @@
       ],
       "calculated": false,
       "type": "string"
+    },
+    "postgresql/password/opscode_chef": {
+      "display_name": "Postgres opscode_chef password",
+      "description": "Postgres password for opscode_chef login",
+      "required": "required",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
+    },
+    "postgresql/password/opscode_chef_ro": {
+      "display_name": "Postgres opscode_chef_ro password",
+      "description": "Postgres password for opscode_chef_ro login",
+      "required": "required",
+      "recipes": [
+        "rs-chef::server"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string"
     }
   },
   "groupings": {
@@ -511,5 +537,14 @@
     "rs-chef::decomm": "Run decommission role",
     "rs-chef::security-updates": "Apply security updates. Install patches packages."
   },
-  "version": "15.0.1"
+  "version": "15.0.3",
+  "source_url": "",
+  "issues_url": "",
+  "privacy": false,
+  "chef_versions": [
+
+  ],
+  "ohai_versions": [
+
+  ]
 }

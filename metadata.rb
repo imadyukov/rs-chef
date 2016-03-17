@@ -4,7 +4,7 @@ maintainer_email "support@rightscale.com"
 license          "Copyright RightScale, Inc. All rights reserved."
 description      "Installs and configures the Chef Client and Server"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "15.0.1"
+version          "15.0.3"
 
 supports "centos"
 supports "redhat"
@@ -308,3 +308,15 @@ attribute "coupa/run_recipe_json",
   :description => "The json string needs to be passed to chef-client on run custom recipe.",
   :required => false,
   :recipes => ["rs-chef::run_recipe"]
+
+attribute 'postgresql/password/opscode_chef',
+  :display_name => 'Postgres opscode_chef password',
+  :description => 'Postgres password for opscode_chef login',
+  :required => true,
+  :recipes => ['rs-chef::server']
+
+attribute 'postgresql/password/opscode_chef_ro',
+  :display_name => 'Postgres opscode_chef_ro password',
+  :description => 'Postgres password for opscode_chef_ro login',
+  :required => true,
+  :recipes => ['rs-chef::server']
