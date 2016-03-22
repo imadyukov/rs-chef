@@ -187,6 +187,7 @@ strace_chef = (node[:chef][:client][:strace] == "true") ? "strace -f -o #{node[:
 # Runs the Chef Client using command extensions.
 execute "run chef-client" do
   command "#{strace_chef} chef-client #{extension}"
+  timeout 86_400
 end
 
 log "  Chef Client role(s) are: #{node[:chef][:client][:current_roles]}"
